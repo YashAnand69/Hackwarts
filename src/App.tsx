@@ -155,7 +155,7 @@ export default function App() {
     const newProfile: UserProfile = {
       id: customId,
       displayName: newProfileName,
-      email: `${newProfileName.toLowerCase().replace(/\s+/g, "")}@community.org`,
+      email: `${newProfileName.toLowerCase().replace(/\s+/g, "")}@hogwarts.edu`,
       photoURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250", // Friendly portrait fallback
       bio: newProfileBio,
       skills: [],
@@ -208,13 +208,13 @@ export default function App() {
         {/* Profile Switcher notice and Custom Creation header block */}
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-[#1E1E1E] border-4 border-[#2D2D2D] dark:border-white p-5 rounded-[2rem] shadow-[4px_4px_0px_#2D2D2D] dark:shadow-[4px_4px_0px_white] transition-colors">
           <div className="flex items-center gap-3">
-            <Handshake className="h-6 w-6 text-[#FF6B6B] shrink-0 stroke-[2.5]" />
+            <Handshake className="h-6 w-6 text-[#FFD23F] shrink-0 stroke-[2.5]" />
             <div>
               <p className="text-sm font-black text-[#2D2D2D] dark:text-white">
-                You are currently acting as <span className="bg-[#FFE66D] text-[#2D2D2D] px-2 py-0.5 rounded-lg border-2 border-[#2D2D2D] dark:border-white">{activeProfile?.displayName}</span>
+                You are currently representing <span className="bg-[#FFE66D] text-[#2D2D2D] px-2 py-0.5 rounded-lg border-2 border-[#2D2D2D] dark:border-white">{activeProfile?.displayName}</span>
               </p>
               <p className="text-[11px] font-bold text-[#2D2D2D]/60 dark:text-white/60 mt-1">
-                Switch profiles in the top-right menu to simulate lesson swaps, trade credits, and chat from different viewpoints!
+                Switch student portfolios in the top-right menu to simulate magic trades, pay in Galleons, and communicate via Owl Post from different viewpoints!
               </p>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function App() {
             className="flex items-center gap-1.5 text-xs font-black text-[#2D2D2D] bg-[#FFE66D] hover:bg-[#FFE66D]/95 border-2 border-[#2D2D2D] dark:border-white px-4 py-2.5 rounded-xl shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer shrink-0"
           >
             <Plus className="h-4.5 w-4.5 stroke-[3]" />
-            Join Timebank / Create Profile
+            Enroll in Hogwarts / Create Wizard Profile
           </button>
         </div>
 
@@ -275,11 +275,16 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className="bg-white dark:bg-[#1E1E1E] border-t-4 border-[#2D2D2D] dark:border-white py-8 mt-16 transition-colors">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-black text-[#2D2D2D]/60 dark:text-white/60">
-          <p>© 2026 HourShare Platform. Built for decentralized community skill sharing.</p>
-          <p className="flex items-center gap-1.5">
-            <Compass className="h-4.5 w-4.5 text-[#FF6B6B]" />
-            Smart Matchmaking powered by Google Gemini AI
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-xs font-black text-[#2D2D2D]/60 dark:text-white/60">
+          <div className="flex flex-col gap-2">
+            <p>© 2026 Hogwarts Hourglass. Crafted for decentralized wizarding skill sharing & spell trade.</p>
+            <p className="text-[11px] text-[#2D2D2D]/70 dark:text-white/70">
+              <span className="bg-[#4ECDC4]/20 text-[#2D2D2D] dark:text-white px-2 py-0.5 rounded border border-[#2D2D2D]/20 dark:border-white/20">Tech Stack:</span> React 18 • TypeScript • Vite • Tailwind CSS • Express • Firebase Firestore (Live DB Sync) • Google Gemini AI SDK (@google/genai)
+            </p>
+          </div>
+          <p className="flex items-center gap-1.5 shrink-0">
+            <Compass className="h-4.5 w-4.5 text-[#FFD23F]" />
+            Sorting Hat Matchmaking powered by Google Gemini AI
           </p>
         </div>
       </footer>
@@ -311,7 +316,7 @@ export default function App() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-black text-[#2D2D2D] dark:text-white flex items-center gap-2">
                 <User className="h-5 w-5 text-[#4ECDC4] stroke-[2.5]" />
-                Join Community Timebank
+                Enroll in Hogwarts School
               </h3>
               <button
                 onClick={() => setShowCreateProfile(false)}
@@ -331,45 +336,45 @@ export default function App() {
             <form onSubmit={handleCreateCustomProfile} className="space-y-4">
               <div>
                 <label className="block text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider mb-1.5">
-                  Full Name
+                  Wizard Name
                 </label>
                 <input
                   type="text"
                   value={newProfileName}
                   onChange={(e) => setNewProfileName(e.target.value)}
-                  placeholder="e.g. Liam Sterling"
+                  placeholder="e.g. Neville Longbottom"
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] px-3.5 py-3 text-xs font-bold text-[#2D2D2D] dark:text-white placeholder-[#2D2D2D]/40 dark:placeholder-white/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20 shadow-sm"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider mb-1.5">
-                  Location / District
+                  Hogwarts House / Location
                 </label>
                 <input
                   type="text"
                   value={newProfileLocation}
                   onChange={(e) => setNewProfileLocation(e.target.value)}
-                  placeholder="e.g. Richmond District, SF"
+                  placeholder="e.g. Gryffindor Tower"
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] px-3.5 py-3 text-xs font-bold text-[#2D2D2D] dark:text-white placeholder-[#2D2D2D]/40 dark:placeholder-white/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20 shadow-sm"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider mb-1.5">
-                  Short Bio / Introduction
+                  Wizarding Bio & Wand wood
                 </label>
                 <textarea
                   rows={3}
                   value={newProfileBio}
                   onChange={(e) => setNewProfileBio(e.target.value)}
-                  placeholder="Tell the neighborhood about yourself, your backgrounds, or what trades you're open to!"
+                  placeholder="Describe your magical lineage, wand specifications (wood/core), and what spells or potions you're keen to trade!"
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] px-3.5 py-3 text-xs font-bold text-[#2D2D2D] dark:text-white placeholder-[#2D2D2D]/40 dark:placeholder-white/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20 shadow-sm"
                 />
               </div>
 
               <div className="rounded-xl bg-[#4ECDC4]/15 p-3.5 text-[11px] text-[#2D2D2D] dark:text-white border-2 border-[#2D2D2D] dark:border-white leading-relaxed font-bold">
-                🎉 Joining awards you <strong>5.0 Credit Hours</strong> instantly so you can request lessons right away! Add your teach/learn tags in your profile tab immediately after joining.
+                🎉 Enrolling awards you <strong>5.0 Galleons 🪙</strong> instantly so you can request spell sessions right away! Set up your magical teach/learn skills in your profile tab.
               </div>
 
               <div className="flex justify-end gap-3 pt-2">

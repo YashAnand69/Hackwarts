@@ -119,7 +119,7 @@ export default function ChatRoom({
       <div className="w-1/3 border-r-4 border-[#2D2D2D] flex flex-col bg-[#F3F3F3]">
         <div className="p-4 border-b-4 border-[#2D2D2D] bg-white">
           <h3 className="text-xs font-black text-[#2D2D2D] uppercase tracking-wider">
-            Conversations
+            Owl Post Chats 🦉
           </h3>
         </div>
         <div className="flex-1 overflow-y-auto p-2 space-y-2">
@@ -169,7 +169,7 @@ export default function ChatRoom({
               <div>
                 <h3 className="text-sm font-black text-[#2D2D2D]">{activePartner.displayName}</h3>
                 <span className="text-[10px] text-[#FF6B6B] font-black uppercase tracking-wider block mt-0.5">
-                  {activePartner.location} • Volunteer Partner
+                  {activePartner.location} • Hogwarts Study Partner
                 </span>
               </div>
             </div>
@@ -179,8 +179,8 @@ export default function ChatRoom({
               {messages.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center p-6 text-center text-[#2D2D2D]/40">
                   <MessageSquare className="h-10 w-10 text-[#FF6B6B] mb-2" />
-                  <p className="text-xs font-black text-[#2D2D2D]">No messages yet</p>
-                  <p className="text-[10px] max-w-xs mt-1 font-bold">Send a friendly greeting to coordinate your skill swap schedule!</p>
+                  <p className="text-xs font-black text-[#2D2D2D]">No letters yet</p>
+                  <p className="text-[10px] max-w-xs mt-1 font-bold">Send a friendly owl letter to coordinate your spell swap schedule!</p>
                 </div>
               ) : (
                 messages.map((msg) => {
@@ -237,9 +237,9 @@ export default function ChatRoom({
         ) : (
           <div className="flex h-full flex-col items-center justify-center text-[#2D2D2D]/40 p-8 text-center bg-[#FFD23F]/5">
             <Compass className="h-12 w-12 text-[#FF6B6B] mb-3 animate-pulse" />
-            <p className="text-sm font-black text-[#2D2D2D]">Select a connection to coordinate</p>
+            <p className="text-sm font-black text-[#2D2D2D]">Select an owl communication</p>
             <p className="text-[10px] mt-1 text-[#2D2D2D]/60 max-w-xs font-bold">
-              Go to the matches feed and click "Chat & Coordinate" to open direct messaging lines with your neighborhood swaps.
+              Go to the matches feed and click "Send Owl Post" to open direct owl-post communication lines with Hogwarts student classmates.
             </p>
           </div>
         )}

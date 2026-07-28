@@ -43,7 +43,7 @@ export default function SwapScheduler({
       return;
     }
     if (!hasEnoughCredits) {
-      setError("Insufficient credits! Host an exchange to earn credits before requesting more lessons.");
+      setError("Insufficient Galleons! Tutor a classmate to earn Galleons before booking more spell trades.");
       return;
     }
 
@@ -77,7 +77,7 @@ export default function SwapScheduler({
       onSuccess();
     } catch (err) {
       console.error("Scheduling error:", err);
-      setError("Failed to schedule swap. Please try again.");
+      setError("Failed to send schedule owl. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +91,7 @@ export default function SwapScheduler({
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <Calendar className="h-6 w-6 text-[#4ECDC4] stroke-[2.5]" />
-            <h3 className="text-lg font-black text-[#2D2D2D]">Request Skill Swap</h3>
+            <h3 className="text-lg font-black text-[#2D2D2D]">Propose Spell Swap</h3>
           </div>
           <button
             onClick={onClose}
@@ -110,7 +110,7 @@ export default function SwapScheduler({
             referrerPolicy="no-referrer"
           />
           <div>
-            <span className="text-[10px] font-black text-[#FF6B6B] uppercase tracking-wider block">TEACHER PARTNER</span>
+            <span className="text-[10px] font-black text-[#FF6B6B] uppercase tracking-wider block">SPELL TUTOR</span>
             <h4 className="text-xs font-black text-[#2D2D2D] mt-0.5">{targetProfile.displayName}</h4>
             <p className="text-[10px] font-bold text-[#2D2D2D]/60 mt-0.5">★ {targetProfile.rating.toFixed(1)} • {targetProfile.location}</p>
           </div>
@@ -128,14 +128,14 @@ export default function SwapScheduler({
           {/* Skill Selector */}
           <div>
             <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider mb-1.5">
-              Which skill do you want to learn?
+              Which spellcraft do you wish to study?
             </label>
             <select
               value={selectedSkill}
               onChange={(e) => setSelectedSkill(e.target.value)}
               className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3 py-3 text-xs font-black text-[#2D2D2D] focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
             >
-              <option value="">-- Choose teaching topic --</option>
+              <option value="">-- Choose spellcraft topic --</option>
               {targetProfile.skills.map((skill) => (
                 <option key={skill} value={skill}>
                   {skill}
@@ -165,7 +165,7 @@ export default function SwapScheduler({
             {/* Date and Time */}
             <div>
               <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider mb-1.5">
-                Target Date & Time
+                Proposed Owl Meeting Time
               </label>
               <input
                 type="datetime-local"
@@ -180,39 +180,39 @@ export default function SwapScheduler({
           {/* Notes / Coordinate info */}
           <div>
             <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider mb-1.5">
-              Personal Message / Coordination Details
+              Personal Letter / Meeting Specifics (Floo Network, Great Hall, etc.)
             </label>
             <textarea
               rows={3}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3 py-2.5 text-xs font-bold text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
-              placeholder="Suggest meeting locations (e.g. online, coffee shop), share your current skill level, or express your availability..."
+              placeholder="Suggest meeting locations (e.g. Room of Requirement, Library, Great Hall), share your spellcraft familiarity, or mention your availability..."
             />
           </div>
 
           {/* Credit Math summary box */}
           <div className="rounded-2xl border-2 border-[#2D2D2D] bg-[#FFE66D]/10 p-4 space-y-2">
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-[#2D2D2D]/60">Your Credit Balance:</span>
-              <span className="font-black text-[#2D2D2D]">{currentProfile.credits.toFixed(1)} Credits</span>
+              <span className="text-[#2D2D2D]/60">Your Galleon Vault Balance:</span>
+              <span className="font-black text-[#2D2D2D]">{currentProfile.credits.toFixed(1)} Galleons</span>
             </div>
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-[#2D2D2D]/60">Session Cost:</span>
-              <span className="font-black text-[#FF6B6B]">-{requiredCredits.toFixed(1)} Credits</span>
+              <span className="text-[#2D2D2D]/60">Class Cost:</span>
+              <span className="font-black text-[#FF6B6B]">-{requiredCredits.toFixed(1)} Galleons</span>
             </div>
             <hr className="border-[#2D2D2D]/10" />
             <div className="flex items-center justify-between text-xs font-black">
               <span className="text-[#2D2D2D]">Remaining Balance:</span>
               <span className={hasEnoughCredits ? "text-[#1D7A73]" : "text-[#FF6B6B]"}>
-                {(currentProfile.credits - requiredCredits).toFixed(1)} Credits
+                {(currentProfile.credits - requiredCredits).toFixed(1)} Galleons
               </span>
             </div>
 
             {!hasEnoughCredits && (
               <div className="mt-2.5 flex items-start gap-1.5 text-[10px] font-black text-[#2D2D2D] bg-[#FF6B6B]/10 rounded-xl p-3 border border-[#FF6B6B]/20">
                 <ShieldAlert className="h-4.5 w-4.5 text-[#FF6B6B] shrink-0 stroke-[2.5]" />
-                <span>Insufficient time credits. Share your skills to host exchanges and replenish your wallet!</span>
+                <span>Insufficient Galleons. Tutor other students at Hogwarts to replenish your vaults!</span>
               </div>
             )}
           </div>
@@ -231,7 +231,7 @@ export default function SwapScheduler({
               disabled={isSubmitting || !hasEnoughCredits}
               className="rounded-xl border-2 border-[#2D2D2D] bg-[#FF6B6B] text-white font-black px-4 py-2.5 text-xs shadow-[2px_2px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] cursor-pointer disabled:opacity-40 transition-all"
             >
-              {isSubmitting ? "Requesting..." : "Submit Exchange"}
+              {isSubmitting ? "Sending owl..." : "Send Request Owl"}
             </button>
           </div>
 

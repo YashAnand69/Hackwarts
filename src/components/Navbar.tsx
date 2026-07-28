@@ -33,10 +33,10 @@ export default function Navbar({
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
             <span className="text-xl font-black tracking-tighter text-[#2D2D2D] dark:text-white select-none">
-              HOUR<span className="text-[#FF6B6B]">SHARE</span>
+              HOGWARTS<span className="text-[#FFD23F]">HOURGLASS</span>
             </span>
             <span className="rounded-lg bg-[#FFE66D] border-2 border-[#2D2D2D] dark:border-white px-1.5 py-0.5 text-[9px] font-black text-[#2D2D2D] tracking-wide uppercase shadow-[1px_1px_0px_#2D2D2D] dark:shadow-[1px_1px_0px_white] hidden sm:inline-block">
-              Timebank
+              Magical Timebank
             </span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function Navbar({
             }`}
           >
             <Flame className="h-4 w-4 stroke-[2.5]" />
-            Smart Matches
+            Sorting Hat Matches
           </button>
           
           <button
@@ -64,7 +64,7 @@ export default function Navbar({
             }`}
           >
             <CalendarCheck className="h-4 w-4 stroke-[2.5]" />
-            Exchanges
+            Owl Exchanges
             {onRequestCount > 0 && (
               <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#FF6B6B] text-[10px] font-black text-white border-2 border-[#2D2D2D] dark:border-white shadow-[1px_1px_0px_#2D2D2D] dark:shadow-[1px_1px_0px_white] animate-bounce">
                 {onRequestCount}
@@ -81,7 +81,7 @@ export default function Navbar({
             }`}
           >
             <MessageSquare className="h-4 w-4 stroke-[2.5]" />
-            Messages
+            Owl Post 🦉
           </button>
 
           <button
@@ -93,7 +93,7 @@ export default function Navbar({
             }`}
           >
             <Trophy className="h-4 w-4 stroke-[2.5]" />
-            Leaderboard
+            Goblet of Mentors
           </button>
 
           <button
@@ -105,7 +105,7 @@ export default function Navbar({
             }`}
           >
             <User className="h-4 w-4 stroke-[2.5]" />
-            My Profile
+            Wizard Profile
           </button>
         </nav>
 
@@ -113,9 +113,9 @@ export default function Navbar({
         <div className="flex items-center gap-3">
           {/* Wallet Balance */}
           {activeProfile && (
-            <div className="flex items-center gap-1.5 rounded-full bg-[#FFE66D] px-3.5 py-1.5 text-xs font-black text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] select-none">
+            <div className="flex items-center gap-1.5 rounded-full bg-[#FFE66D] px-3.5 py-1.5 text-xs font-black text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] select-none" title="Wizards' currency for trading spell sessions">
               <Coins className="h-4 w-4 text-[#2D2D2D] fill-[#FFD23F] stroke-[2.5]" />
-              <span>{activeProfile.credits.toFixed(1)} hrs</span>
+              <span>{activeProfile.credits.toFixed(1)} Galleons 🪙</span>
             </div>
           )}
 
@@ -134,7 +134,7 @@ export default function Navbar({
 
           {/* Persona Switcher Dropdown */}
           <div className="flex items-center gap-2">
-            <span className="hidden text-[11px] font-bold text-[#2D2D2D] dark:text-white opacity-60 lg:inline-block">Acting as:</span>
+            <span className="hidden text-[11px] font-bold text-[#2D2D2D] dark:text-white opacity-60 lg:inline-block">Active Wizard:</span>
             <div className="relative inline-block">
               <select
                 id="profile-switcher"
@@ -174,7 +174,7 @@ export default function Navbar({
           }`}
         >
           <Flame className="h-5 w-5 stroke-[2.5]" />
-          Matches
+          Sorting
         </button>
         <button
           onClick={() => setActiveTab("swaps")}
@@ -201,7 +201,7 @@ export default function Navbar({
           }`}
         >
           <MessageSquare className="h-5 w-5 stroke-[2.5]" />
-          Chat
+          Owl Post
         </button>
         <button
           onClick={() => setActiveTab("leaderboard")}
@@ -212,7 +212,7 @@ export default function Navbar({
           }`}
         >
           <Trophy className="h-5 w-5 stroke-[2.5]" />
-          Volunteers
+          Goblet
         </button>
         <button
           onClick={() => setActiveTab("profile")}
@@ -223,7 +223,7 @@ export default function Navbar({
           }`}
         >
           <User className="h-5 w-5 stroke-[2.5]" />
-          Profile
+          Wizard
         </button>
       </div>
     </header>

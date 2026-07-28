@@ -26,7 +26,7 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
       badgeColor: "bg-[#FFE66D] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white",
       height: "h-48 md:h-56 order-2",
       rank: 1,
-      rankTitle: "Gold Mentor",
+      rankTitle: "Order of Merlin, First Class",
     },
     {
       bg: "bg-white dark:bg-[#1E1E1E] border-4 border-[#2D2D2D] dark:border-white shadow-[6px_6px_0px_#4ECDC4]",
@@ -34,7 +34,7 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
       badgeColor: "bg-[#4ECDC4] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white",
       height: "h-40 md:h-48 order-1",
       rank: 2,
-      rankTitle: "Silver Mentor",
+      rankTitle: "Order of Merlin, Second Class",
     },
     {
       bg: "bg-white dark:bg-[#1E1E1E] border-4 border-[#2D2D2D] dark:border-white shadow-[6px_6px_0px_#FF6B6B]",
@@ -42,7 +42,7 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
       badgeColor: "bg-[#FF6B6B] text-white border-2 border-[#2D2D2D] dark:border-white",
       height: "h-36 md:h-40 order-3",
       rank: 3,
-      rankTitle: "Bronze Mentor",
+      rankTitle: "Order of Merlin, Third Class",
     }
   ];
 
@@ -61,10 +61,10 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
           <div className="text-center">
             <h3 className="text-2xl sm:text-3xl font-black text-[#2D2D2D] dark:text-white flex items-center justify-center gap-2 tracking-tight">
               <Trophy className="h-7 w-7 text-[#FFD23F] fill-[#FFD23F] stroke-[#2D2D2D] dark:stroke-white stroke-[2]" />
-              Mentor <span className="text-[#FF6B6B]">Leaderboard</span>
+              Goblet of <span className="text-[#FF6B6B]">Magic Mentors</span>
             </h3>
             <p className="text-xs font-bold text-[#2D2D2D]/60 dark:text-white/60 mt-1 max-w-md mx-auto">
-              Our community thrives on shared knowledge! Meet our most active neighborhood mentors ranked by hours taught.
+              Hogwarts thrives on shared spellcraft! Meet our most active student tutors ranked by magical class-hours taught.
             </p>
           </div>
 
@@ -75,8 +75,8 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
                 className={`w-full sm:w-64 rounded-[2rem] ${style.bg} p-5 flex flex-col justify-end items-center text-center relative ${style.height} transition-all hover:-translate-y-1`}
               >
                 {/* Gold/Silver/Bronze crown badge */}
-                <span className={`absolute -top-3 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] ${style.badgeColor}`}>
-                  ★ Rank {style.rank}
+                <span className={`absolute -top-3 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] ${style.badgeColor}`} title={style.rankTitle}>
+                  ★ {style.rankTitle}
                 </span>
 
                 <img
@@ -97,7 +97,7 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
                       <Clock className="h-3.5 w-3.5 text-[#4ECDC4] stroke-[2.5]" />
                       {profile.taughtHours}h
                     </span>
-                    <span className="text-[9px] text-[#2D2D2D]/50 dark:text-white/50 font-black uppercase tracking-wider">Taught</span>
+                    <span className="text-[9px] text-[#2D2D2D]/50 dark:text-white/50 font-black uppercase tracking-wider">Taught Classes</span>
                   </div>
                   <div>
                     <span className="block text-sm font-black text-[#2D2D2D] dark:text-white flex items-center justify-center gap-0.5">
@@ -117,7 +117,7 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
       <div className="rounded-[2rem] border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white] overflow-hidden max-w-4xl mx-auto transition-colors">
         <div className="p-4 bg-[#F3F3F3] dark:bg-[#2D2D2D] border-b-4 border-[#2D2D2D] dark:border-white">
           <h4 className="text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider">
-            All Neighborhood Volunteers
+            All Hogwarts Witches & Wizards
           </h4>
         </div>
 
@@ -165,8 +165,8 @@ export default function Leaderboard({ allProfiles }: LeaderboardProps) {
                 {/* Score breakdown metrics */}
                 <div className="flex items-center gap-6 text-right">
                   <div>
-                    <span className="block text-xs font-black text-[#2D2D2D] dark:text-white">{profile.taughtHours} Hours</span>
-                    <span className="text-[9px] text-[#2D2D2D]/50 dark:text-white/50 font-bold uppercase tracking-wider">Contributed</span>
+                    <span className="block text-xs font-black text-[#2D2D2D] dark:text-white">{profile.taughtHours} Classes</span>
+                    <span className="text-[9px] text-[#2D2D2D]/50 dark:text-white/50 font-bold uppercase tracking-wider">Taught</span>
                   </div>
                   <div>
                     <span className="block text-xs font-black text-[#2D2D2D] dark:text-white flex items-center justify-end gap-0.5">

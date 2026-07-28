@@ -148,7 +148,7 @@ export default function ProfileView({
       <div className="lg:col-span-2 space-y-6">
         <div className="rounded-[2.5rem] border-4 border-[#2D2D2D] bg-white p-6 sm:p-8 shadow-[6px_6px_0px_#2D2D2D]">
           <h2 className="text-xl font-black text-[#2D2D2D] mb-6 flex items-center gap-2">
-            Edit Community Profile
+            Edit Hogwarts Student Profile
           </h2>
 
           {aiError && (
@@ -162,21 +162,21 @@ export default function ProfileView({
             {/* Display Name */}
             <div>
               <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider mb-2">
-                Full Name / Handle
+                Wizard / Witch Full Name
               </label>
               <input
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3.5 py-3 text-xs font-black text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
-                placeholder="Jane Doe"
+                placeholder="Hermione Granger"
               />
             </div>
 
             {/* Location */}
             <div>
               <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider mb-2">
-                Location / Neighborhood
+                Hogwarts House & Dormitory
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3.5 top-3.5 h-4.5 w-4.5 text-[#2D2D2D]" />
@@ -185,7 +185,7 @@ export default function ProfileView({
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] pl-10 pr-3.5 py-3 text-xs font-black text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
-                  placeholder="e.g. Mission District, SF"
+                  placeholder="e.g. Gryffindor Tower"
                 />
               </div>
             </div>
@@ -194,16 +194,16 @@ export default function ProfileView({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider">
-                  My Bio & Skill description
+                  Magical Bio & Spell Profile
                 </label>
-                <span className="text-[10px] font-black text-[#2D2D2D]/50">Describe what you do & hope to exchange</span>
+                <span className="text-[10px] font-black text-[#2D2D2D]/50">Describe your wand & magical interests</span>
               </div>
               <textarea
                 rows={4}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3.5 py-3 text-xs font-bold text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
-                placeholder="Write about yourself, what you can teach, and what you are looking to learn..."
+                placeholder="Describe your magical background, your wand type, Hogwarts house pride, and what spells you can tutor/wish to learn..."
               />
             </div>
 
@@ -211,7 +211,7 @@ export default function ProfileView({
             <div>
               <div className="flex items-center justify-between mb-2.5">
                 <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider">
-                  Skills I Can Teach (Earn Credits)
+                  Spellcraft I Can Tutor (Earn Galleons 🪙)
                 </label>
                 <button
                   type="button"
@@ -220,7 +220,7 @@ export default function ProfileView({
                   className="flex items-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] bg-[#FFE66D] px-3 py-1.5 text-[11px] font-black text-[#2D2D2D] shadow-[2px_2px_0px_#2D2D2D] hover:bg-[#FFE66D]/95 active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] transition-all cursor-pointer"
                 >
                   <Sparkles className="h-3.5 w-3.5 text-[#2D2D2D] stroke-[2.5]" />
-                  {isSuggestingSkills ? "Analyzing Bio..." : "AI Suggest Tags"}
+                  {isSuggestingSkills ? "Consulting hat..." : "AI Spell Tags"}
                 </button>
               </div>
 
@@ -232,7 +232,7 @@ export default function ProfileView({
                   onChange={(e) => setNewSkill(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill(newSkill))}
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3.5 py-2.5 text-xs font-bold text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none"
-                  placeholder="e.g. Acoustic Guitar"
+                  placeholder="e.g. Defense Against the Dark Arts"
                 />
                 <button
                   type="button"
@@ -246,7 +246,7 @@ export default function ProfileView({
               {/* Active Tags */}
               <div className="flex flex-wrap gap-2">
                 {skills.length === 0 ? (
-                  <p className="text-xs text-[#2D2D2D]/50 italic font-bold">No skills listed yet.</p>
+                  <p className="text-xs text-[#2D2D2D]/50 italic font-bold">No spellcraft listed yet.</p>
                 ) : (
                   skills.map((s) => (
                     <span
@@ -271,7 +271,7 @@ export default function ProfileView({
             <div>
               <div className="flex items-center justify-between mb-2.5">
                 <label className="block text-xs font-black text-[#2D2D2D] uppercase tracking-wider">
-                  What I Want To Learn (Spend Credits)
+                  Spells I Wish to Learn (Spend Galleons 🪙)
                 </label>
                 <button
                   type="button"
@@ -280,7 +280,7 @@ export default function ProfileView({
                   className="flex items-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] bg-[#FFE66D] px-3 py-1.5 text-[11px] font-black text-[#2D2D2D] shadow-[2px_2px_0px_#2D2D2D] hover:bg-[#FFE66D]/95 active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] transition-all cursor-pointer"
                 >
                   <Sparkles className="h-3.5 w-3.5 text-[#2D2D2D] stroke-[2.5]" />
-                  {isSuggestingNeeds ? "Analyzing Bio..." : "AI Suggest Tags"}
+                  {isSuggestingNeeds ? "Hat thinking..." : "AI Spell Tags"}
                 </button>
               </div>
 
@@ -292,7 +292,7 @@ export default function ProfileView({
                   onChange={(e) => setNewNeed(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddNeed(newNeed))}
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3.5 py-2.5 text-xs font-bold text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none"
-                  placeholder="e.g. Thai Cooking"
+                  placeholder="e.g. Care of Magical Creatures"
                 />
                 <button
                   type="button"
@@ -306,7 +306,7 @@ export default function ProfileView({
               {/* Active Tags */}
               <div className="flex flex-wrap gap-2">
                 {needs.length === 0 ? (
-                  <p className="text-xs text-[#2D2D2D]/50 italic font-bold">No learning desires listed yet.</p>
+                  <p className="text-xs text-[#2D2D2D]/50 italic font-bold">No magical aspirations listed yet.</p>
                 ) : (
                   needs.map((n) => (
                     <span
@@ -358,22 +358,22 @@ export default function ProfileView({
         {/* Wallet Balance Summary */}
         <div className="rounded-[2rem] border-4 border-[#2D2D2D] bg-white p-6 shadow-[4px_4px_0px_#2D2D2D]">
           <h3 className="text-xs font-black text-[#2D2D2D]/50 uppercase tracking-wider mb-4 block">
-            Credit Balance
+            Galleon Vault Balance 🪙
           </h3>
           <div className="flex items-baseline gap-2">
             <span className="text-4xl font-black tracking-tight text-[#2D2D2D]">
               {activeProfile.credits.toFixed(1)}
             </span>
-            <span className="text-xs font-black text-[#2D2D2D]/60 uppercase">Credits</span>
+            <span className="text-xs font-black text-[#2D2D2D]/60 uppercase">Galleons</span>
           </div>
           <p className="mt-4 text-xs font-medium text-[#2D2D2D]/75 leading-relaxed bg-[#FFE66D]/10 rounded-xl p-3.5 border-2 border-[#2D2D2D]/10">
-            Credits represent hours of community sharing. Earn them by hosting skill swaps (teaching); spend them to unlock matches (learning).
+            Galleons represent magical hours of tutoring at Hogwarts. Earn them by hosting spell swaps (tutoring); spend them to unlock spell trades.
           </p>
 
           <div className="mt-6 grid grid-cols-2 gap-4 border-t-2 border-[#2D2D2D]/10 pt-4 text-center">
             <div>
               <span className="block text-xl font-black text-[#2D2D2D]">{activeProfile.taughtHours}h</span>
-              <span className="text-[10px] font-black text-[#2D2D2D]/50 uppercase mt-0.5 block">Total Taught</span>
+              <span className="text-[10px] font-black text-[#2D2D2D]/50 uppercase mt-0.5 block">Spells Taught</span>
             </div>
             <div>
               <span className="block text-xl font-black text-[#2D2D2D]">★ {activeProfile.rating.toFixed(1)}</span>
@@ -385,13 +385,13 @@ export default function ProfileView({
         {/* Transaction History / Time Bank Ledger */}
         <div className="rounded-[2rem] border-4 border-[#2D2D2D] bg-white p-6 shadow-[4px_4px_0px_#2D2D2D]">
           <h3 className="text-xs font-black text-[#2D2D2D]/50 uppercase tracking-wider mb-4 block">
-            Exchange Ledger
+            Marauder's Exchange Ledger 📜
           </h3>
 
           <div className="space-y-3.5 max-h-[320px] overflow-y-auto pr-1">
             {userSwapsLedger.length === 0 ? (
               <div className="text-center py-6">
-                <p className="text-xs text-[#2D2D2D]/40 italic font-bold">No completed transfers on record.</p>
+                <p className="text-xs text-[#2D2D2D]/40 italic font-bold">No magical trades completed yet.</p>
               </div>
             ) : (
               userSwapsLedger.map((swap) => {
@@ -403,7 +403,7 @@ export default function ProfileView({
                         {swap.skill}
                       </span>
                       <span className="text-[10px] font-bold text-[#2D2D2D]/50 mt-0.5">
-                        {isTeacher ? `Taught: ${swap.requesterName}` : `Learned: ${swap.receiverName}`}
+                        {isTeacher ? `Tutored: ${swap.requesterName}` : `Studied: ${swap.receiverName}`}
                       </span>
                     </div>
 

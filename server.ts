@@ -31,6 +31,50 @@ if (apiKey) {
 }
 
 // -------------------------------------------------------------
+// Helper Functions for Local Fallbacks
+// -------------------------------------------------------------
+
+function getLocalMatches(currentProfile: any, candidates: any[]) {
+  return candidates.map(candidate => {
+    // Simple tag overlaps
+    const commonTeachLearn = candidate.skills.filter((s: string) => currentProfile.needs.includes(s));
+    const commonLearnTeach = candidate.needs.filter((n: string) => currentProfile.skills.includes(n));
+    const commonInterests = Array.from(new Set([...commonTeachLearn, ...commonLearnTeach]));
+    
+    const overlapCount = commonInterests.length;
+    const score = Math.min(30 + (overlapCount * 25) + Math.round(candidate.rating * 5), 100);
+
+    const icebreaker = `Greetings, ${candidate.displayName}! I shall send an owl 🦉 to coordinate a spell exchange. I saw you can teach ${candidate.skills[0] || 'magical subjects'} which is exactly what my wand needs! Shall we meet in the Room of Requirement?`;
+    const reasoning = `Perfect match for your magical studies in: ${commonInterests.join(', ') || 'Spellcraft'}. Outstanding classmate with excellent Ministry rating!`;
+
+    return {
+      userId: candidate.id,
+      compatibilityScore: score,
+      commonInterests,
+      icebreaker,
+      reasoning
+    };
+  });
+}
+
+function getLocalSuggestedTags(bio: string, type: "teach" | "learn") {
+  const lowerBio = bio.toLowerCase();
+  const possibleTags = [
+    "Defense Against the Dark Arts", "Expecto Patronum", "Broomstick Flying", "Herbology", 
+    "Potions Crafting", "Transfiguration", "Charms", "Arithmancy", "Divination", 
+    "Care of Magical Creatures", "History of Magic", "Astronomy", "Ancient Runes", 
+    "Occlumency", "Legilimency", "Quidditch Strategy", "Duelling", "Dark Arts"
+  ];
+  const foundTags = possibleTags.filter(tag => lowerBio.includes(tag.toLowerCase()));
+  const fallbackTags = foundTags.length > 0 ? foundTags.slice(0, 4) : (
+    type === "teach" 
+      ? ["Defense Against the Dark Arts", "Transfiguration", "Charms"] 
+      : ["Potions Crafting", "Herbology", "Care of Magical Creatures"]
+  );
+  return fallbackTags;
+}
+
+// -------------------------------------------------------------
 // API Endpoints
 // -------------------------------------------------------------
 
@@ -52,62 +96,42 @@ app.post("/api/matchmaking", async (req, res) => {
   // If Gemini client is not initialized, fallback to rule-based matching
   if (!ai) {
     console.log("No Gemini API key found, running fallback local matching...");
-    const matches = candidates.map(candidate => {
-      // Simple tag overlaps
-      const commonTeachLearn = candidate.skills.filter((s: string) => currentProfile.needs.includes(s));
-      const commonLearnTeach = candidate.needs.filter((n: string) => currentProfile.skills.includes(n));
-      const commonInterests = Array.from(new Set([...commonTeachLearn, ...commonLearnTeach]));
-      
-      const overlapCount = commonInterests.length;
-      const score = Math.min(30 + (overlapCount * 25) + Math.round(candidate.rating * 5), 100);
-
-      const icebreaker = `Hey ${candidate.displayName}! I saw that you can teach ${candidate.skills[0] || 'skills'} and I'm really looking to learn that. Would you be down for a quick skill exchange?`;
-      const reasoning = `Matches your learning need for: ${commonInterests.join(', ') || 'skills'}. Friendly neighbor with a high community rating!`;
-
-      return {
-        userId: candidate.id,
-        compatibilityScore: score,
-        commonInterests,
-        icebreaker,
-        reasoning
-      };
-    });
-
+    const matches = getLocalMatches(currentProfile, candidates);
     return res.json({ matches });
   }
 
   try {
     const prompt = `
-      You are a smart matchmaking assistant for a community skill-sharing platform.
-      We want to find the best skill-swap matches for the active user.
+      You are the Sorting Hat and a grand matchmaking master of Hogwarts School of Witchcraft and Wizardry!
+      We want to find the best magical skill-swap matches for the active Hogwarts student.
       
-      Active User Profile:
+      Active Student Profile:
       - Name: ${currentProfile.displayName}
-      - Skills Can Teach: ${currentProfile.skills.join(", ")}
-      - Needs Wants to Learn: ${currentProfile.needs.join(", ")}
-      - Bio: "${currentProfile.bio}"
+      - Magical Arts to Teach: ${currentProfile.skills.join(", ")}
+      - Magical Subjects to Learn: ${currentProfile.needs.join(", ")}
+      - Wizarding Bio & Wand: "${currentProfile.bio}"
       
-      Candidates Profiles:
+      Classmate Candidates Profiles:
       ${candidates.map((c, i) => `
       Candidate #${i+1}:
       - ID: ${c.id}
       - Name: ${c.displayName}
-      - Skills Can Teach: ${c.skills.join(", ")}
-      - Needs Wants to Learn: ${c.needs.join(", ")}
-      - Bio: "${c.bio}"
-      - Community Rating: ${c.rating} / 5
+      - Magical Arts to Teach: ${c.skills.join(", ")}
+      - Magical Subjects to Learn: ${c.needs.join(", ")}
+      - Wizarding Bio & Wand: "${c.bio}"
+      - Ministry Rating: ${c.rating} / 5
       `).join("\n")}
       
       For each candidate, calculate:
       1. A compatibility score (0 to 100) based on:
-         - How well the active user's skills match the candidate's needs (giving teaching opportunities).
-         - How well the candidate's skills match the active user's needs (giving learning opportunities).
-         - Alignment of general interests from their bio.
-      2. An array of 'commonInterests' (specific overlapping skills or subjects).
-      3. A personalized conversational 'icebreaker' message that the active user can send to this candidate to initiate a swap. Reference their specific profile details warmly.
-      4. A brief, 1-sentence 'reasoning' explaining why they are a good match.
+         - How well the active user's spells and magical arts match the candidate's learning needs (giving mentoring opportunities).
+         - How well the candidate's spells and magical arts match the active user's learning needs (giving learning opportunities).
+         - Alignment of Hogwarts Houses and magical subjects in their bios.
+      2. An array of 'commonInterests' (specific overlapping magical skills, spells, potions, or subjects).
+      3. A personalized, magical conversational 'icebreaker' message that the active wizard/witch can send to this candidate via Owl Post. Reference their specific House, wand wood, or spells warmly and humorously (e.g., using "By Merlin's beard!", "meet in the Library", "brew some Felix Felicis together").
+      4. A brief, 1-sentence magical 'reasoning' explaining why they are an outstanding pairing (e.g., "Gryffindor and Slytherin bridge their rivalry through a shared passion for Advanced Transfiguration!").
       
-      Return a structured list of matches for all candidates.
+      Return a structured list of matches for all candidates in the requested JSON format.
     `;
 
     const response = await ai.models.generateContent({
@@ -147,8 +171,9 @@ app.post("/api/matchmaking", async (req, res) => {
     res.json(matchesData);
 
   } catch (error) {
-    console.error("Matchmaking error with Gemini:", error);
-    res.status(500).json({ error: "Failed to process matchmaking with Gemini." });
+    console.warn("Matchmaking error with Gemini (quota or limit hit), running local rule-based fallback:", error);
+    const matches = getLocalMatches(currentProfile, candidates);
+    res.json({ matches });
   }
 });
 
@@ -161,18 +186,17 @@ app.post("/api/suggest-tags", async (req, res) => {
   }
 
   if (!ai) {
-    // Basic local fallback
-    const mockSuggestions = type === "teach" ? ["Communication", "Public Speaking", "Creativity"] : ["Python Programming", "Digital Arts", "Personal Finance"];
-    return res.json({ tags: mockSuggestions });
+    const tags = getLocalSuggestedTags(bio, type);
+    return res.json({ tags });
   }
 
   try {
     const prompt = `
-      Based on the following user bio/description, extract and suggest up to 4 concise skill tags (each 1-3 words max) that this user might be able to ${type === "teach" ? "teach/share with others" : "benefit from learning"}.
+      Based on the following Hogwarts student bio, extract and suggest up to 4 concise magical skill tags or spell subjects (each 1-3 words max, such as "Herbology", "Expecto Patronum", "Potions Crafting", "Transfiguration") that this student might be able to ${type === "teach" ? "teach or tutor other students" : "benefit from learning or practicing"}.
       
-      User Bio: "${bio}"
+      Student Bio: "${bio}"
       
-      Return as a flat JSON array of strings.
+      Return as a flat JSON array of strings under the 'tags' field.
     `;
 
     const response = await ai.models.generateContent({
@@ -199,8 +223,9 @@ app.post("/api/suggest-tags", async (req, res) => {
     res.json(tagsData);
 
   } catch (error) {
-    console.error("Suggest tags error:", error);
-    res.status(500).json({ error: "Failed to suggest tags." });
+    console.warn("Suggest tags error with Gemini (quota or limit hit), running local fallback:", error);
+    const tags = getLocalSuggestedTags(bio, type);
+    res.json({ tags });
   }
 });
 

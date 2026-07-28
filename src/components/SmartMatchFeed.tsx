@@ -126,7 +126,7 @@ export default function SmartMatchFeed({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by neighborhood name, skills, location..."
+            placeholder="Search by student name, spells, Hogwarts House..."
             className="block w-full rounded-2xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] pl-11 pr-4 py-3 text-xs font-black text-[#2D2D2D] dark:text-white placeholder-[#2D2D2D]/40 dark:placeholder-white/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
           />
         </div>
@@ -141,7 +141,7 @@ export default function SmartMatchFeed({
                 : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
             }`}
           >
-            All Neighbors
+            All Students
           </button>
           <button
             onClick={() => setFilterType("teaches_my_need")}
@@ -151,7 +151,7 @@ export default function SmartMatchFeed({
                 : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
             }`}
           >
-            Teaches My Needs
+            Tutors My House Needs
           </button>
           <button
             onClick={() => setFilterType("learns_my_skill")}
@@ -161,7 +161,7 @@ export default function SmartMatchFeed({
                 : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
             }`}
           >
-            Wants My Skills
+            Seeks My Spellcraft
           </button>
         </div>
 
@@ -172,7 +172,7 @@ export default function SmartMatchFeed({
           className="flex items-center justify-center gap-1.5 rounded-xl bg-[#FFE66D] border-2 border-[#2D2D2D] dark:border-white px-4 py-2.5 text-xs font-black text-[#2D2D2D] shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] hover:bg-[#FFD23F] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] disabled:opacity-50 transition-all cursor-pointer"
         >
           <Compass className={`h-4.5 w-4.5 text-[#2D2D2D] stroke-[2.5] ${isLoading ? "animate-spin" : ""}`} />
-          Recalculate Matches
+          Consult Sorting Hat
         </button>
       </div>
 
@@ -183,9 +183,9 @@ export default function SmartMatchFeed({
             <div className="h-16 w-16 rounded-full border-4 border-[#4ECDC4]/20 border-t-[#4ECDC4] animate-spin"></div>
             <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-[#FF6B6B] animate-pulse" />
           </div>
-          <h3 className="text-xl font-black text-[#2D2D2D] dark:text-white">Gemini Matchmaking...</h3>
+          <h3 className="text-xl font-black text-[#2D2D2D] dark:text-white">Sorting Hat Matchmaking...</h3>
           <p className="mt-2 text-xs text-[#2D2D2D]/60 dark:text-white/60 max-w-sm">
-            Aligning local interest tags, mapping credit distributions, and creating personalized lesson icebreakers!
+            Aligning magical disciplines, casting compatibility charms, and preparing custom owl-post greetings!
           </p>
         </div>
       ) : filteredMatches.length === 0 ? (
@@ -211,7 +211,7 @@ export default function SmartMatchFeed({
                 {/* Visual Neobrutalist Rotating Badge */}
                 {isHighMatch && (
                   <div className="absolute top-4 -right-3 bg-[#FF6B6B] text-white px-4 py-1 rounded-lg font-black text-[10px] tracking-wider uppercase rotate-6 border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] z-10">
-                    ★ BEST MATCH
+                    ★ HOGWARTS FAVORITE
                   </div>
                 )}
 
@@ -232,7 +232,7 @@ export default function SmartMatchFeed({
                         <span>{match.user.location}</span>
                         <span>•</span>
                         <span className="text-[#FF6B6B] font-black">★ {match.user.rating.toFixed(1)}</span>
-                        <span className="opacity-70">({match.user.totalReviews} swaps)</span>
+                        <span className="opacity-70">({match.user.totalReviews} spell trades)</span>
                       </p>
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function SmartMatchFeed({
                   {/* Score Indicator Pill */}
                   <div className="mt-4 inline-flex items-center gap-1 bg-[#FFE66D] border-2 border-[#2D2D2D] dark:border-white px-3 py-1 rounded-xl shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] text-xs font-black text-[#2D2D2D]">
                     <Percent className="h-3 w-3 stroke-[3]" />
-                    <span>{match.compatibilityScore}% Swap Match</span>
+                    <span>{match.compatibilityScore}% Magical Synergy</span>
                   </div>
 
                   {/* AI Match reasoning box */}
@@ -264,7 +264,7 @@ export default function SmartMatchFeed({
                     {/* Can Teach */}
                     <div>
                       <span className="block text-[10px] font-black text-[#FF6B6B] uppercase tracking-wider mb-2">
-                        Offering Skills
+                        Spellcraft Offering (Tutor)
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {match.user.skills.map((skill) => {
@@ -288,7 +288,7 @@ export default function SmartMatchFeed({
                     {/* Wants to Learn */}
                     <div>
                       <span className="block text-[10px] font-black text-[#4ECDC4] uppercase tracking-wider mb-2">
-                        Wants to Learn
+                        Magical Aspirations (Learner)
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {match.user.needs.map((need) => {
@@ -326,7 +326,7 @@ export default function SmartMatchFeed({
                       className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#2D2D2D] hover:bg-[#FDFCF8] dark:hover:bg-[#1E1E1E] py-3 text-xs font-black text-[#2D2D2D] dark:text-white shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer"
                     >
                       <MessageSquare className="h-4 w-4 stroke-[2.5]" />
-                      Chat & Co-ordinate
+                      Send Owl Post 🦉
                     </button>
 
                     {/* Lesson Request submission */}
@@ -337,7 +337,7 @@ export default function SmartMatchFeed({
                       }}
                       className="flex-1 flex items-center justify-center gap-1 rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 py-3 text-xs font-black text-white shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer"
                     >
-                      <span>Request Lesson</span>
+                      <span>Propose Spell Trade</span>
                       <ArrowRight className="h-4 w-4 stroke-[2.5]" />
                     </button>
                   </div>

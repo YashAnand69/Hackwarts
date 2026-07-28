@@ -23,7 +23,7 @@ export default function RequestManager({
   if (!currentProfile) {
     return (
       <div className="flex h-96 items-center justify-center rounded-2xl bg-white border-4 border-[#2D2D2D] shadow-[4px_4px_0px_#2D2D2D] p-6 text-center">
-        <p className="text-sm font-black text-[#2D2D2D] font-sans">Please select a profile in the header to manage exchanges.</p>
+        <p className="text-sm font-black text-[#2D2D2D] font-sans">Please select a wizard/witch profile in the header to manage spell swaps.</p>
       </div>
     );
   }
@@ -163,7 +163,7 @@ export default function RequestManager({
               {swap.status}
             </span>
             <div className="flex items-center gap-1.5 text-[11px] font-black text-[#2D2D2D] bg-[#FFE66D]/20 border-2 border-[#2D2D2D] rounded-full px-3 py-0.5 shadow-[1.5px_1.5px_0px_#2D2D2D]">
-              <span>{swap.credits} {swap.credits === 1 ? "Credit" : "Credits"}</span>
+              <span>{swap.credits} {swap.credits === 1 ? "Galleon 🪙" : "Galleons 🪙"}</span>
             </div>
           </div>
 
@@ -172,7 +172,7 @@ export default function RequestManager({
 
           {/* Peer Details */}
           <p className="text-xs text-[#2D2D2D]/60 mt-1.5 font-bold">
-            {isTeacher ? "Learner:" : "Teacher:"} <span className="font-black text-[#2D2D2D]">{otherPartyName}</span>
+            {isTeacher ? "Apprentice Student:" : "Spell Instructor:"} <span className="font-black text-[#2D2D2D]">{otherPartyName}</span>
           </p>
 
           {/* Time & Duration */}
@@ -183,7 +183,7 @@ export default function RequestManager({
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4.5 w-4.5 text-[#4ECDC4] stroke-[2.5]" />
-              <span>{swap.duration} {swap.duration === 1 ? "Hour" : "Hours"} swap</span>
+              <span>{swap.duration} {swap.duration === 1 ? "Hour" : "Hours"} class swap</span>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ export default function RequestManager({
                 className="flex items-center gap-1.5 rounded-lg border-2 border-[#2D2D2D] bg-[#4ECDC4] text-[#2D2D2D] px-3 py-1.5 text-xs font-black shadow-[1.5px_1.5px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[0.5px_0.5px_0px_#2D2D2D] transition-all cursor-pointer"
               >
                 <Check className="h-4 w-4 stroke-[2.5]" />
-                Accept Swap
+                Accept Spell Trade
               </button>
             </>
           )}
@@ -231,7 +231,7 @@ export default function RequestManager({
               onClick={() => handleUpdateStatus(swap.id, "cancelled")}
               className="rounded-lg border-2 border-[#2D2D2D] bg-white hover:bg-[#F3F3F3] text-[#2D2D2D]/60 px-3 py-1.5 text-xs font-black shadow-[1.5px_1.5px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[0.5px_0.5px_0px_#2D2D2D] transition-all cursor-pointer"
             >
-              Cancel Exchange
+              Cancel Owl Exchange
             </button>
           )}
 
@@ -242,14 +242,14 @@ export default function RequestManager({
               className="flex items-center gap-1 rounded-lg border-2 border-[#2D2D2D] bg-[#FF6B6B] text-white px-3 py-1.5 text-xs font-black shadow-[1.5px_1.5px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[0.5px_0.5px_0px_#2D2D2D] transition-all cursor-pointer"
             >
               <ShieldCheck className="h-4 w-4 stroke-[2]" />
-              Complete & Review
+              Complete Spell Swap & Review
             </button>
           )}
 
           {/* Review status indicator if completed */}
           {swap.status === "completed" && (
             <div className="text-xs font-black text-[#2D2D2D]/50 py-1.5 px-2 flex items-center">
-              {hasReviewed ? "✓ Reviewed & Swapped" : (
+              {hasReviewed ? "✓ Reviewed & Swapped Spells" : (
                 <button
                   onClick={() => handleOpenReviewModal(swap)}
                   className="text-[#FF6B6B] hover:underline flex items-center gap-1 cursor-pointer font-black"
@@ -271,7 +271,7 @@ export default function RequestManager({
       <div>
         <div className="mb-6 flex items-center justify-between">
           <h3 className="text-lg sm:text-xl font-black text-[#2D2D2D] flex items-center gap-2">
-            Incoming Swaps (I'm Teaching)
+            Incoming Spell Trades (I'm Tutoring)
           </h3>
           <span className="rounded-xl bg-[#FFE66D] border-2 border-[#2D2D2D] px-3 py-1 text-xs font-black text-[#2D2D2D] shadow-[2px_2px_0px_#2D2D2D]">
             {incomingSwaps.length} Active
@@ -280,7 +280,7 @@ export default function RequestManager({
 
         {incomingSwaps.length === 0 ? (
           <div className="rounded-[2rem] border-4 border-[#2D2D2D] border-dashed bg-white p-8 text-center shadow-[4px_4px_0px_#2D2D2D]">
-            <p className="text-xs text-[#2D2D2D]/60 italic font-bold">No incoming lesson requests yet. Add more skill tags to your profile so neighbors can discover and book exchanges with you!</p>
+            <p className="text-xs text-[#2D2D2D]/60 italic font-bold">No incoming lesson owls yet! Add more spellcraft offerings to your profile so other Hogwarts students can discover and book exchanges with you!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -293,7 +293,7 @@ export default function RequestManager({
       <div>
         <div className="mb-6 flex items-center justify-between">
           <h3 className="text-lg sm:text-xl font-black text-[#2D2D2D] flex items-center gap-2">
-            Requested Swaps (I'm Learning)
+            Outgoing Spell Requests (I'm Studying)
           </h3>
           <span className="rounded-xl bg-[#FFE66D] border-2 border-[#2D2D2D] px-3 py-1 text-xs font-black text-[#2D2D2D] shadow-[2px_2px_0px_#2D2D2D]">
             {outgoingSwaps.length} Active
@@ -302,7 +302,7 @@ export default function RequestManager({
 
         {outgoingSwaps.length === 0 ? (
           <div className="rounded-[2rem] border-4 border-[#2D2D2D] border-dashed bg-white p-8 text-center shadow-[4px_4px_0px_#2D2D2D]">
-            <p className="text-xs text-[#2D2D2D]/60 italic font-bold">You haven't requested any swaps yet. Head over to Smart Matches to request a lesson from a local neighbor!</p>
+            <p className="text-xs text-[#2D2D2D]/60 italic font-bold">You haven't requested any spell trades yet. Head over to the Sorting Hat Matches to seek tutoring from fellow Hogwarts classmates!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -316,7 +316,7 @@ export default function RequestManager({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2D2D2D]/60 p-4 backdrop-blur-xs animate-fade-in">
           <div className="w-full max-w-md rounded-[2rem] border-4 border-[#2D2D2D] bg-white p-6 shadow-[8px_8px_0px_#2D2D2D] animate-scale-up">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-black text-[#2D2D2D]">Complete & Review Swap</h3>
+              <h3 className="text-lg font-black text-[#2D2D2D]">Complete & Review Spell Trade</h3>
               <button
                 onClick={() => setSelectedSwapForReview(null)}
                 className="rounded-xl border-2 border-[#2D2D2D] p-1.5 text-[#2D2D2D] hover:bg-[#F3F3F3] cursor-pointer"
@@ -326,7 +326,7 @@ export default function RequestManager({
             </div>
 
             <p className="text-xs font-bold text-[#2D2D2D]/60 mb-5 leading-relaxed">
-              Completing this exchange will transfer <strong className="text-[#FF6B6B]">{selectedSwapForReview.credits} time credits</strong> and log completed hours in the community time ledger. Please rate your experience!
+              Completing this exchange will transfer <strong className="text-[#FF6B6B]">{selectedSwapForReview.credits} Galleons 🪙</strong> and log the class hours in the Hogwarts Hourglass ledger. Please rate your tutor's magical instruction!
             </p>
 
             {reviewError && (
@@ -370,7 +370,7 @@ export default function RequestManager({
                   rows={4}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share how the swap went! Was your tutor clear? Did you enjoy learning together?"
+                  placeholder="Share how your spell swap went! Was your wizard/witch tutor clear? Did you master the spell craft together?"
                   className="block w-full rounded-xl border-2 border-[#2D2D2D] bg-[#F3F3F3] px-3 py-2.5 text-xs font-bold text-[#2D2D2D] placeholder-[#2D2D2D]/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
                 />
               </div>
@@ -388,7 +388,7 @@ export default function RequestManager({
                   disabled={isSubmittingReview}
                   className="rounded-xl border-2 border-[#2D2D2D] bg-[#FF6B6B] text-white font-black px-4 py-2.5 text-xs shadow-[2px_2px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] cursor-pointer"
                 >
-                  {isSubmittingReview ? "Submitting..." : "Submit & Complete Swap"}
+                  {isSubmittingReview ? "Submitting..." : "Submit Review & Complete Spell Trade"}
                 </button>
               </div>
             </form>
