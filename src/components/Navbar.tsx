@@ -1,6 +1,6 @@
 import React from "react";
 import { UserProfile } from "../types";
-import { Handshake, Coins, UserCircle2, Flame, Users, CalendarCheck, MessageSquare, Trophy, User, Sun, Moon } from "lucide-react";
+import { Handshake, Coins, UserCircle2, Flame, Users, CalendarCheck, MessageSquare, Trophy, User, Sun, Moon, Wand2 } from "lucide-react";
 
 interface NavbarProps {
   profiles: UserProfile[];
@@ -94,6 +94,18 @@ export default function Navbar({
           >
             <Trophy className="h-4 w-4 stroke-[2.5]" />
             Goblet of Mentors
+          </button>
+
+          <button
+            onClick={() => setActiveTab("alchemy")}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-black transition-all cursor-pointer ${
+              activeTab === "alchemy"
+                ? "bg-[#4ECDC4] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white]"
+                : "text-[#2D2D2D] dark:text-[#F3F3F3] opacity-70 hover:opacity-100 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 border-2 border-transparent"
+            }`}
+          >
+            <Wand2 className="h-4 w-4 stroke-[2.5]" />
+            Alchemy Cauldron 🧪
           </button>
 
           <button
@@ -202,6 +214,17 @@ export default function Navbar({
         >
           <MessageSquare className="h-5 w-5 stroke-[2.5]" />
           Owl Post
+        </button>
+        <button
+          onClick={() => setActiveTab("alchemy")}
+          className={`flex flex-col items-center gap-1 text-[10px] font-black w-16 py-1 rounded-xl transition-all cursor-pointer ${
+            activeTab === "alchemy" 
+              ? "text-[#2D2D2D] bg-[#4ECDC4] border-2 border-[#2D2D2D] dark:border-white shadow-[1px_1px_0px_#2D2D2D] dark:shadow-[1px_1px_0px_white]" 
+              : "text-[#2D2D2D]/70 dark:text-[#F3F3F3]/70 border-2 border-transparent"
+          }`}
+        >
+          <Wand2 className="h-5 w-5 stroke-[2.5]" />
+          Cauldron
         </button>
         <button
           onClick={() => setActiveTab("leaderboard")}

@@ -18,6 +18,7 @@ import RequestManager from "./components/RequestManager";
 import ChatRoom from "./components/ChatRoom";
 import Leaderboard from "./components/Leaderboard";
 import ProfileView from "./components/ProfileView";
+import AlchemyLab from "./components/AlchemyLab";
 import { Plus, User, Check, X, Compass, Handshake, AlertCircle } from "lucide-react";
 
 export default function App() {
@@ -261,6 +262,13 @@ export default function App() {
 
           {activeTab === "leaderboard" && (
             <Leaderboard allProfiles={profiles} />
+          )}
+
+          {activeTab === "alchemy" && (
+            <AlchemyLab
+              currentProfile={activeProfile}
+              onProfileUpdated={(updated) => setActiveProfile(updated)}
+            />
           )}
 
           {activeTab === "profile" && (
