@@ -189,7 +189,7 @@ export default function App() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-[#FDFCF8] dark:bg-[#121212] flex flex-col font-sans text-[#2D2D2D] dark:text-[#F3F3F3] transition-colors">
+    <div className="min-h-screen bg-[#FDF9EE] dark:bg-[#0D0914] flex flex-col font-sans text-[#2C1E14] dark:text-[#EDE7E0] transition-colors selection:bg-[#ECB939] selection:text-[#1E1100]">
       
       {/* Navbar Section */}
       <Navbar
@@ -207,24 +207,24 @@ export default function App() {
       <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8">
         
         {/* Profile Switcher notice and Custom Creation header block */}
-        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-[#1E1E1E] border-4 border-[#2D2D2D] dark:border-white p-5 rounded-[2rem] shadow-[4px_4px_0px_#2D2D2D] dark:shadow-[4px_4px_0px_white] transition-colors">
+        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-[#1C1625] border-4 border-[#4A321E] dark:border-[#FFE894] p-5 rounded-[2.5rem] shadow-[6px_6px_0px_#4A321E] dark:shadow-[6px_6px_0px_#FFE894] transition-all">
           <div className="flex items-center gap-3">
-            <Handshake className="h-6 w-6 text-[#FFD23F] shrink-0 stroke-[2.5]" />
+            <span className="text-3xl animate-pulse">📜</span>
             <div>
-              <p className="text-sm font-black text-[#2D2D2D] dark:text-white">
-                You are currently representing <span className="bg-[#FFE66D] text-[#2D2D2D] px-2 py-0.5 rounded-lg border-2 border-[#2D2D2D] dark:border-white">{activeProfile?.displayName}</span>
+              <p className="text-sm font-black text-[#4A321E] dark:text-[#FFE894] font-serif tracking-tight">
+                Active Student Portfolio: <span className="bg-[#ECB939] text-[#1A0F00] px-2.5 py-0.5 rounded-lg border-2 border-[#4A321E]">{activeProfile?.displayName}</span>
               </p>
-              <p className="text-[11px] font-bold text-[#2D2D2D]/60 dark:text-white/60 mt-1">
-                Switch student portfolios in the top-right menu to simulate magic trades, pay in Galleons, and communicate via Owl Post from different viewpoints!
+              <p className="text-[11px] font-bold text-[#4A321E]/70 dark:text-[#EDE7E0]/70 mt-1">
+                Represent this student across Hogwarts. Propose spell exchanges, consult the Sorting Hat matchmaking index, or brew alchemical tag potions!
               </p>
             </div>
           </div>
           <button
             onClick={() => setShowCreateProfile(true)}
-            className="flex items-center gap-1.5 text-xs font-black text-[#2D2D2D] bg-[#FFE66D] hover:bg-[#FFE66D]/95 border-2 border-[#2D2D2D] dark:border-white px-4 py-2.5 rounded-xl shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-xs font-black text-[#FFE894] bg-[#740001] hover:bg-[#9B1B30] border-2 border-[#4A321E] dark:border-[#FFE894] px-4 py-2.5 rounded-xl shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer shrink-0"
           >
             <Plus className="h-4.5 w-4.5 stroke-[3]" />
-            Enroll in Hogwarts / Create Wizard Profile
+            Enroll / Create Wizard Portfolio
           </button>
         </div>
 

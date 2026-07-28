@@ -218,23 +218,23 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
       
       {/* LEFT COLUMN: Input and Controls */}
       <div className="lg:col-span-7 space-y-6">
-        <div className="rounded-[2.5rem] border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-6 sm:p-8 shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white]">
+        <div className="rounded-[2.5rem] border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-6 sm:p-8 shadow-[6px_6px_0px_#4A321E] dark:shadow-[6px_6px_0px_#FFE894]">
           
           {/* Header Title */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-[#FFE66D] border-2 border-[#2D2D2D] flex items-center justify-center shadow-[2px_2px_0px_#2D2D2D]">
+            <div className="w-10 h-10 rounded-xl bg-[#ECB939] border-2 border-[#4A321E] flex items-center justify-center shadow-[2px_2px_0px_#4A321E]">
               <span className="text-xl">🧪</span>
             </div>
             <div>
-              <h2 className="text-xl font-black text-[#2D2D2D] dark:text-white tracking-tight">Hogwarts Alchemy Cauldron</h2>
-              <p className="text-[10px] font-bold text-[#2D2D2D]/60 dark:text-white/60">Combine magical ingredients, set the dial, and brew comical custom spell-tags!</p>
+              <h2 className="text-xl font-black font-serif text-[#4A321E] dark:text-[#FFE894] tracking-tight">Hogwarts Alchemy Cauldron</h2>
+              <p className="text-[10px] font-bold text-[#4A321E]/70 dark:text-[#EDE7E0]/70">Combine magical ingredients, set the dial, and brew comical custom spell-tags!</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Ingredient 1 Select */}
             <div>
-              <label className="block text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-[#4A321E] dark:text-white uppercase tracking-wider mb-2">
                 Primary Ingredient 🧪
               </label>
               <select
@@ -244,7 +244,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
                   setCurrentOutcome(null);
                 }}
                 disabled={isBrewing}
-                className="block w-full rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] py-3 px-3 text-xs font-black text-[#2D2D2D] dark:text-white focus:outline-none"
+                className="block w-full rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#251B33] py-3 px-3 text-xs font-black text-[#4A321E] dark:text-[#EDE7E0] focus:outline-none"
               >
                 <option value="">-- Choose Ingredient 1 --</option>
                 {POTION_INGREDIENTS.map((ing) => (
@@ -254,7 +254,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
                 ))}
               </select>
               {ingredient1 && (
-                <p className="text-[10px] text-[#2D2D2D]/60 dark:text-white/60 font-bold mt-1.5 italic bg-[#F3F3F3]/50 dark:bg-[#2D2D2D]/30 p-2 rounded-lg border border-dashed border-[#2D2D2D]/10">
+                <p className="text-[10px] text-[#4A321E]/70 dark:text-white/60 font-bold mt-1.5 italic bg-[#F3EFE0]/50 dark:bg-[#251B33]/30 p-2 rounded-lg border border-dashed border-[#4A321E]/20">
                   {ingredient1.desc}
                 </p>
               )}
@@ -262,7 +262,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
 
             {/* Ingredient 2 Select */}
             <div>
-              <label className="block text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-[#4A321E] dark:text-white uppercase tracking-wider mb-2">
                 Catalyst Essence ✨
               </label>
               <select
@@ -272,7 +272,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
                   setCurrentOutcome(null);
                 }}
                 disabled={isBrewing}
-                className="block w-full rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] py-3 px-3 text-xs font-black text-[#2D2D2D] dark:text-white focus:outline-none"
+                className="block w-full rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#251B33] py-3 px-3 text-xs font-black text-[#4A321E] dark:text-[#EDE7E0] focus:outline-none"
               >
                 <option value="">-- Choose Ingredient 2 --</option>
                 {POTION_INGREDIENTS.map((ing) => (
@@ -282,7 +282,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
                 ))}
               </select>
               {ingredient2 && (
-                <p className="text-[10px] text-[#2D2D2D]/60 dark:text-white/60 font-bold mt-1.5 italic bg-[#F3F3F3]/50 dark:bg-[#2D2D2D]/30 p-2 rounded-lg border border-dashed border-[#2D2D2D]/10">
+                <p className="text-[10px] text-[#4A321E]/70 dark:text-white/60 font-bold mt-1.5 italic bg-[#F3EFE0]/50 dark:bg-[#251B33]/30 p-2 rounded-lg border border-dashed border-[#4A321E]/20">
                   {ingredient2.desc}
                 </p>
               )}
@@ -290,11 +290,11 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
           </div>
 
           {/* Temperature Slider */}
-          <div className="mt-6 border-t-2 border-[#2D2D2D]/10 dark:border-white/10 pt-5">
+          <div className="mt-6 border-t-2 border-[#4A321E]/10 dark:border-white/10 pt-5">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs font-black text-[#2D2D2D] dark:text-white uppercase tracking-wider">Brewing Temperature Dial 🔥</span>
-              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-[#2D2D2D] ${
-                temperature > 80 ? "bg-[#FF6B6B] text-white animate-pulse" : temperature < 20 ? "bg-[#4ECDC4] text-[#2D2D2D]" : "bg-[#FFE66D] text-[#2D2D2D]"
+              <span className="text-xs font-black text-[#4A321E] dark:text-white uppercase tracking-wider">Brewing Temperature Dial 🔥</span>
+              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-[#4A321E] ${
+                temperature > 80 ? "bg-[#740001] text-white animate-pulse" : temperature < 20 ? "bg-[#2E6F40] text-white" : "bg-[#ECB939] text-[#1A0F00]"
               }`}>
                 {temperature}% - {temperature > 80 ? "Snape's Rage Mode!" : temperature < 20 ? "Tepid Bubbles" : "Perfect Simmer"}
               </span>
@@ -306,9 +306,9 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
               value={temperature}
               onChange={(e) => setTemperature(Number(e.target.value))}
               disabled={isBrewing}
-              className="w-full h-2.5 bg-[#F3F3F3] dark:bg-[#2D2D2D] rounded-lg appearance-none cursor-pointer accent-[#FF6B6B] border-2 border-[#2D2D2D] dark:border-white"
+              className="w-full h-2.5 bg-[#FDF9EE] dark:bg-[#2D2D2D] rounded-lg appearance-none cursor-pointer accent-[#740001] border-2 border-[#4A321E] dark:border-[#FFE894]"
             />
-            <div className="flex justify-between text-[9px] font-black text-[#2D2D2D]/40 dark:text-white/40 mt-1 uppercase">
+            <div className="flex justify-between text-[9px] font-black text-[#4A321E]/40 dark:text-white/40 mt-1 uppercase">
               <span>0% - Ice Cold</span>
               <span>50% - Standard Draught</span>
               <span>100% - Critical Volatility!</span>
@@ -320,10 +320,10 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
             <button
               onClick={handleBrew}
               disabled={isBrewing || !selected1 || !selected2}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl border-4 border-[#2D2D2D] dark:border-white bg-[#FFD23F] hover:bg-[#FFD23F]/95 py-3.5 text-xs font-black text-[#2D2D2D] shadow-[4px_4px_0px_#2D2D2D] dark:shadow-[4px_4px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl border-4 border-[#4A321E] dark:border-[#FFE894] bg-[#ECB939] hover:bg-[#ECB939]/95 py-3.5 text-xs font-black text-[#1A0F00] shadow-[4px_4px_0px_#4A321E] dark:shadow-[4px_4px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <Flame className={`h-5 w-5 ${isBrewing ? "animate-spin text-[#FF6B6B]" : "text-[#2D2D2D]"}`} />
-              <span>{isBrewing ? "STIRRING THE COALDRON..." : "STIR ALCHEMICAL COALDRON (Brew Spell-Tag!)"}</span>
+              <Flame className={`h-5 w-5 ${isBrewing ? "animate-spin text-[#740001]" : "text-[#1A0F00]"}`} />
+              <span>{isBrewing ? "STIRRING THE CAULDRON..." : "STIR ALCHEMICAL CAULDRON (Brew Spell-Tag!)"}</span>
             </button>
           </div>
 
@@ -334,7 +334,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
       <div className="lg:col-span-5 space-y-6">
         
         {/* Animated Cauldron Visual */}
-        <div className="rounded-[2.5rem] border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-6 shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white] flex flex-col items-center justify-center text-center relative overflow-hidden h-[340px]">
+        <div className="rounded-[2.5rem] border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-6 shadow-[6px_6px_0px_#4A321E] dark:shadow-[6px_6px_0px_#FFE894] flex flex-col items-center justify-center text-center relative overflow-hidden h-[340px]">
           
           {/* Bubbles animation */}
           {isBrewing && (
@@ -342,7 +342,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
               {bubbles.map((b) => (
                 <div
                   key={b.id}
-                  className="absolute bottom-0 bg-[#4ECDC4]/40 dark:bg-[#FFE66D]/40 border border-white/30 rounded-full animate-bubble"
+                  className="absolute bottom-0 bg-[#ECB939]/40 dark:bg-[#FFE894]/40 border border-white/30 rounded-full animate-bubble"
                   style={{
                     left: `${b.left}%`,
                     width: `${b.size}px`,
@@ -357,8 +357,8 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
 
           {/* Cauldron SVG / Illustration */}
           <div className="relative z-10">
-            <div className={`w-36 h-36 bg-[#2D2D2D] dark:bg-black rounded-full border-4 border-dashed border-[#FF6B6B] dark:border-[#4ECDC4] flex items-center justify-center ${isBrewing ? "animate-wiggle" : ""}`}>
-              <div className="w-28 h-28 bg-[#4ECDC4]/20 rounded-full flex flex-col items-center justify-center relative">
+            <div className={`w-36 h-36 bg-[#1A0F00] dark:bg-black rounded-full border-4 border-dashed border-[#740001] dark:border-[#ECB939] flex items-center justify-center ${isBrewing ? "animate-wiggle" : ""}`}>
+              <div className="w-28 h-28 bg-[#ECB939]/20 rounded-full flex flex-col items-center justify-center relative">
                 {isBrewing ? (
                   <span className="text-5xl animate-bounce">🧙‍♂️</span>
                 ) : currentOutcome ? (
@@ -367,34 +367,34 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
                   <span className="text-5xl">🥣</span>
                 )}
                 {/* Boiling liquid top line */}
-                <div className={`absolute bottom-6 w-20 h-1 rounded-full ${isBrewing ? "bg-[#FF6B6B] animate-pulse" : "bg-[#4ECDC4]"}`}></div>
+                <div className={`absolute bottom-6 w-20 h-1 rounded-full ${isBrewing ? "bg-[#740001] animate-pulse" : "bg-[#ECB939]"}`}></div>
               </div>
             </div>
             
             {/* Cauldron Legs */}
             <div className="flex justify-between px-10 -mt-2">
-              <div className="w-4 h-6 bg-[#2D2D2D] dark:bg-black rounded-b-xl border-2 border-dashed border-[#FF6B6B]"></div>
-              <div className="w-4 h-6 bg-[#2D2D2D] dark:bg-black rounded-b-xl border-2 border-dashed border-[#FF6B6B]"></div>
+              <div className="w-4 h-6 bg-[#1A0F00] dark:bg-black rounded-b-xl border-2 border-dashed border-[#740001]"></div>
+              <div className="w-4 h-6 bg-[#1A0F00] dark:bg-black rounded-b-xl border-2 border-dashed border-[#740001]"></div>
             </div>
           </div>
 
           <div className="mt-4 relative z-10 w-full px-2">
             {isBrewing ? (
               <div>
-                <p className="text-xs font-black text-[#FF6B6B] uppercase tracking-wider animate-pulse">{brewStep}</p>
-                <div className="mt-2 h-1.5 w-32 bg-[#F3F3F3] dark:bg-[#2D2D2D] border border-[#2D2D2D] mx-auto rounded-full overflow-hidden">
-                  <div className="h-full bg-[#4ECDC4] animate-loading-bar rounded-full"></div>
+                <p className="text-xs font-black text-[#740001] dark:text-[#FFE894] uppercase tracking-wider animate-pulse">{brewStep}</p>
+                <div className="mt-2 h-1.5 w-32 bg-[#FDF9EE] dark:bg-[#2D2D2D] border border-[#4A321E] mx-auto rounded-full overflow-hidden">
+                  <div className="h-full bg-[#ECB939] animate-loading-bar rounded-full"></div>
                 </div>
               </div>
             ) : currentOutcome ? (
               <div>
-                <span className="text-[10px] font-black text-[#4ECDC4] dark:text-[#FFE66D] uppercase tracking-wider">SUCCESSFULLY BREWED!</span>
-                <h4 className="text-sm font-black text-[#2D2D2D] dark:text-white mt-1 leading-tight">{currentOutcome.name}</h4>
+                <span className="text-[10px] font-black text-[#740001] dark:text-[#FFE894] uppercase tracking-wider">SUCCESSFULLY BREWED!</span>
+                <h4 className="text-sm font-black text-[#4A321E] dark:text-white mt-1 leading-tight font-serif">{currentOutcome.name}</h4>
               </div>
             ) : (
               <div>
-                <p className="text-xs font-black text-[#2D2D2D]/40 dark:text-white/40">Select ingredients and pull the lever to ignite cauldron fire.</p>
-                <p className="text-[9px] font-bold text-[#2D2D2D]/30 dark:text-white/30 uppercase mt-1">Snape's brewing books say there are no explosion warranties.</p>
+                <p className="text-xs font-black text-[#4A321E]/60 dark:text-white/60 font-serif">Select ingredients and pull the lever to ignite cauldron fire.</p>
+                <p className="text-[9px] font-bold text-[#4A321E]/40 dark:text-white/40 uppercase mt-1">Snape's brewing books say there are no explosion warranties.</p>
               </div>
             )}
           </div>
@@ -405,10 +405,10 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
       {/* FULL WIDTH OUTCOME COMPONENT */}
       {currentOutcome && (
         <div className="lg:col-span-12 animate-scale-up">
-          <div className={`rounded-[2rem] border-4 border-[#2D2D2D] dark:border-white p-6 sm:p-8 relative ${currentOutcome.color} text-[#2D2D2D] shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white]`}>
+          <div className={`rounded-[2rem] border-4 border-[#4A321E] p-6 sm:p-8 relative ${currentOutcome.color} text-[#1A0F00] shadow-[6px_6px_0px_#4A321E]`}>
             
             {/* Stamp badge */}
-            <div className="absolute top-4 right-4 bg-white border-2 border-[#2D2D2D] px-3.5 py-1 rounded-xl text-[9px] font-black uppercase tracking-wider shadow-[2px_2px_0px_#2D2D2D]">
+            <div className="absolute top-4 right-4 bg-white border-2 border-[#4A321E] px-3.5 py-1 rounded-xl text-[9px] font-black uppercase tracking-wider shadow-[2px_2px_0px_#4A321E]">
               Rating: {currentOutcome.rating}
             </div>
 
@@ -416,17 +416,17 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
               <div className="space-y-2 max-w-2xl">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🔮</span>
-                  <h3 className="text-xl font-black text-[#2D2D2D]">{currentOutcome.name}</h3>
+                  <h3 className="text-xl font-black font-serif text-[#1A0F00]">{currentOutcome.name}</h3>
                 </div>
-                <p className="text-xs font-bold text-[#2D2D2D]/80 leading-relaxed bg-white/40 p-3 rounded-xl border border-[#2D2D2D]/10">
+                <p className="text-xs font-bold text-[#1A0F00]/85 leading-relaxed bg-white/40 p-3 rounded-xl border border-[#4A321E]/10">
                   {currentOutcome.description}
                 </p>
                 <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase">
-                  <span className="bg-white/80 px-2.5 py-1 rounded-lg border border-[#2D2D2D]/15">
+                  <span className="bg-white/80 px-2.5 py-1 rounded-lg border border-[#4A321E]/15">
                     Synthesized Spellcraft: <strong>{currentOutcome.synthesizedTag}</strong>
                   </span>
-                  <span className={`px-2.5 py-1 rounded-lg border border-[#2D2D2D]/15 ${
-                    currentOutcome.dangerLevel === "Explosive!" ? "bg-[#FF6B6B] text-white" : "bg-white/80"
+                  <span className={`px-2.5 py-1 rounded-lg border border-[#4A321E]/15 ${
+                    currentOutcome.dangerLevel === "Explosive!" ? "bg-[#740001] text-[#FFE894]" : "bg-white/80"
                   }`}>
                     Danger: {currentOutcome.dangerLevel}
                   </span>
@@ -437,16 +437,16 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
               <div className="w-full md:w-auto shrink-0">
                 {currentProfile ? (
                   hasInscribed ? (
-                    <div className="flex items-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] bg-white text-[#1D7A73] px-5 py-3 font-black text-xs shadow-[2px_2px_0px_#2D2D2D]">
+                    <div className="flex items-center gap-1.5 rounded-xl border-2 border-[#4A321E] bg-white text-[#2E6F40] px-5 py-3 font-black text-xs shadow-[2px_2px_0px_#4A321E]">
                       <Check className="h-4.5 w-4.5 stroke-[3]" />
                       <span>Inscribed onto your Profile!</span>
                     </div>
                   ) : (
                     <button
                       onClick={handleInscribe}
-                      className="w-full flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] bg-white hover:bg-neutral-50 px-5 py-3 text-xs font-black text-[#2D2D2D] shadow-[3px_3px_0px_#2D2D2D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] cursor-pointer transition-all"
+                      className="w-full flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#4A321E] bg-white hover:bg-[#FDF9EE] px-5 py-3 text-xs font-black text-[#1A0F00] shadow-[3px_3px_0px_#4A321E] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] cursor-pointer transition-all"
                     >
-                      <Plus className="h-4.5 w-4.5 text-[#2D2D2D] stroke-[3]" />
+                      <Plus className="h-4.5 w-4.5 text-[#1A0F00] stroke-[3]" />
                       <span>Add "{currentOutcome.synthesizedTag}" to My Skills!</span>
                     </button>
                   )

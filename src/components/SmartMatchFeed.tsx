@@ -114,20 +114,20 @@ export default function SmartMatchFeed({
   });
 
   return (
-    <div className="space-y-8 text-[#2D2D2D] dark:text-white">
+    <div className="space-y-8 text-[#2C1E14] dark:text-white">
       
       {/* Search and Filters Banner Container */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-3xl border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-5 shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white] transition-colors">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 rounded-3xl border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-5 shadow-[6px_6px_0px_#4A321E] dark:shadow-[6px_6px_0px_#FFE894] transition-colors">
         
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-[#2D2D2D] dark:text-white opacity-60" />
+          <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-[#4A321E] dark:text-[#FFE894] opacity-60" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by student name, spells, Hogwarts House..."
-            className="block w-full rounded-2xl border-2 border-[#2D2D2D] dark:border-white bg-[#F3F3F3] dark:bg-[#2D2D2D] pl-11 pr-4 py-3 text-xs font-black text-[#2D2D2D] dark:text-white placeholder-[#2D2D2D]/40 dark:placeholder-white/40 focus:outline-none focus:ring-4 ring-[#4ECDC4]/20"
+            className="block w-full rounded-2xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#251B33] pl-11 pr-4 py-3 text-xs font-black text-[#4A321E] dark:text-[#EDE7E0] placeholder-[#4A321E]/40 dark:placeholder-white/40 focus:outline-none"
           />
         </div>
 
@@ -137,8 +137,8 @@ export default function SmartMatchFeed({
             onClick={() => setFilterType("all")}
             className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
               filterType === "all"
-                ? "bg-[#4ECDC4] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white]"
-                : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
+                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
+                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
             }`}
           >
             All Students
@@ -147,8 +147,8 @@ export default function SmartMatchFeed({
             onClick={() => setFilterType("teaches_my_need")}
             className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
               filterType === "teaches_my_need"
-                ? "bg-[#4ECDC4] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white]"
-                : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
+                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
+                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
             }`}
           >
             Tutors My House Needs
@@ -157,8 +157,8 @@ export default function SmartMatchFeed({
             onClick={() => setFilterType("learns_my_skill")}
             className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
               filterType === "learns_my_skill"
-                ? "bg-[#4ECDC4] text-[#2D2D2D] border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white]"
-                : "bg-white dark:bg-[#2D2D2D] text-[#2D2D2D] dark:text-white border-2 border-transparent opacity-80 hover:bg-[#F3F3F3] dark:hover:bg-[#2D2D2D]/60 hover:opacity-100"
+                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
+                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
             }`}
           >
             Seeks My Spellcraft
@@ -169,22 +169,22 @@ export default function SmartMatchFeed({
         <button
           onClick={runMatchmaking}
           disabled={isLoading}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-[#FFE66D] border-2 border-[#2D2D2D] dark:border-white px-4 py-2.5 text-xs font-black text-[#2D2D2D] shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] hover:bg-[#FFD23F] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] disabled:opacity-50 transition-all cursor-pointer"
+          className="flex items-center justify-center gap-1.5 rounded-xl bg-[#ECB939] border-2 border-[#4A321E] dark:border-[#FFE894] px-4 py-2.5 text-xs font-black text-[#1A0F00] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] hover:bg-[#ECB939]/90 active:translate-y-0.5 disabled:opacity-50 transition-all cursor-pointer"
         >
-          <Compass className={`h-4.5 w-4.5 text-[#2D2D2D] stroke-[2.5] ${isLoading ? "animate-spin" : ""}`} />
+          <Compass className={`h-4.5 w-4.5 text-[#1A0F00] stroke-[2.5] ${isLoading ? "animate-spin" : ""}`} />
           Consult Sorting Hat
         </button>
       </div>
 
       {/* Matching Feed Content */}
       {isLoading ? (
-        <div className="flex flex-col h-96 items-center justify-center rounded-3xl border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-8 shadow-[8px_8px_0px_#FFE66D] text-center transition-colors">
+        <div className="flex flex-col h-96 items-center justify-center rounded-3xl border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-8 shadow-[8px_8px_0px_#ECB939] text-center transition-colors">
           <div className="relative mb-4">
-            <div className="h-16 w-16 rounded-full border-4 border-[#4ECDC4]/20 border-t-[#4ECDC4] animate-spin"></div>
-            <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-[#FF6B6B] animate-pulse" />
+            <div className="h-16 w-16 rounded-full border-4 border-[#740001]/20 border-t-[#740001] animate-spin"></div>
+            <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-[#ECB939] animate-pulse" />
           </div>
-          <h3 className="text-xl font-black text-[#2D2D2D] dark:text-white">Sorting Hat Matchmaking...</h3>
-          <p className="mt-2 text-xs text-[#2D2D2D]/60 dark:text-white/60 max-w-sm">
+          <h3 className="text-xl font-black text-[#4A321E] dark:text-white font-serif">Sorting Hat Matchmaking...</h3>
+          <p className="mt-2 text-xs text-[#4A321E]/75 dark:text-white/75 max-w-sm">
             Aligning magical disciplines, casting compatibility charms, and preparing custom owl-post greetings!
           </p>
         </div>
@@ -200,20 +200,70 @@ export default function SmartMatchFeed({
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {filteredMatches.map((match) => {
             const isHighMatch = match.compatibilityScore >= 75;
-            // Alternated high-contrast shadows based on matching status
-            const cardShadow = isHighMatch ? "shadow-[8px_8px_0px_#FF6B6B] dark:shadow-[8px_8px_0px_#FF6B6B]" : "shadow-[8px_8px_0px_#FFE66D] dark:shadow-[8px_8px_0px_#FFE66D]";
+            
+            // Dynamic House Theme resolver
+            const loc = (match.user.location || "").toLowerCase();
+            let houseTheme = {
+              border: "border-[#4A321E] dark:border-[#FFE894]",
+              shadow: "shadow-[8px_8px_0px_#4A321E] dark:shadow-[8px_8px_0px_#FFE894]",
+              bg: "bg-white dark:bg-[#1C1625]",
+              badgeBg: "bg-[#ECB939] text-[#1A0F00] border-2 border-[#4A321E]",
+              badgeText: "Hogwarts Student",
+              accentColor: "#ECB939",
+              teachTagBg: "bg-[#ECB939]/10 text-[#4A321E] border-[#4A321E]/30"
+            };
+
+            if (loc.includes("gryffindor")) {
+              houseTheme = {
+                border: "border-[#740001] dark:border-[#ECB939]",
+                shadow: "shadow-[8px_8px_0px_#740001] dark:shadow-[8px_8px_0px_#ECB939]",
+                bg: "bg-[#FFF9F9] dark:bg-[#1C090D]",
+                badgeBg: "bg-[#740001] text-[#FFE894] border-2 border-[#ECB939]",
+                badgeText: "Gryffindor House 🦁",
+                accentColor: "#740001",
+                teachTagBg: "bg-[#740001]/10 text-[#740001] dark:text-[#FFE894] border-[#740001]/20"
+              };
+            } else if (loc.includes("slytherin")) {
+              houseTheme = {
+                border: "border-[#1A472A] dark:border-[#2E6F40]",
+                shadow: "shadow-[8px_8px_0px_#1A472A] dark:shadow-[8px_8px_0px_#2E6F40]",
+                bg: "bg-[#F4FAF6] dark:bg-[#07140B]",
+                badgeBg: "bg-[#1A472A] text-white border-2 border-[#2E6F40]",
+                badgeText: "Slytherin House 🐍",
+                accentColor: "#1A472A",
+                teachTagBg: "bg-[#1A472A]/10 text-[#1A472A] dark:text-[#E0FFF0] border-[#1A472A]/20"
+              };
+            } else if (loc.includes("ravenclaw")) {
+              houseTheme = {
+                border: "border-[#0E2140] dark:border-[#4E93DC]",
+                shadow: "shadow-[8px_8px_0px_#0E2140] dark:shadow-[8px_8px_0px_#4E93DC]",
+                bg: "bg-[#F4F8FA] dark:bg-[#06101F]",
+                badgeBg: "bg-[#0E2140] text-white border-2 border-[#4E93DC]",
+                badgeText: "Ravenclaw House 🦅",
+                accentColor: "#0E2140",
+                teachTagBg: "bg-[#0E2140]/10 text-[#0E2140] dark:text-[#E0F0FF] border-[#0E2140]/20"
+              };
+            } else if (loc.includes("hufflepuff") || loc.includes("greenhouse") || loc.includes("herbology")) {
+              houseTheme = {
+                border: "border-[#4A321E] dark:border-[#FFE894]",
+                shadow: "shadow-[8px_8px_0px_#ECB939] dark:shadow-[8px_8px_0px_#FFE894]",
+                bg: "bg-[#FCFAF2] dark:bg-[#1E1908]",
+                badgeBg: "bg-[#ECB939] text-[#1A0F00] border-2 border-[#4A321E]",
+                badgeText: "Hufflepuff House 🦡",
+                accentColor: "#ECB939",
+                teachTagBg: "bg-[#ECB939]/15 text-[#4A321E] dark:text-[#FFE894] border-[#ECB939]/20"
+              };
+            }
 
             return (
               <div
                 key={match.user.id}
-                className={`flex flex-col justify-between rounded-[2rem] border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-6 ${cardShadow} relative overflow-hidden transition-all hover:-translate-x-0.5 hover:-translate-y-0.5`}
+                className={`flex flex-col justify-between rounded-[2.5rem] border-4 ${houseTheme.border} ${houseTheme.bg} p-6 ${houseTheme.shadow} relative overflow-hidden transition-all hover:-translate-x-0.5 hover:-translate-y-0.5`}
               >
-                {/* Visual Neobrutalist Rotating Badge */}
-                {isHighMatch && (
-                  <div className="absolute top-4 -right-3 bg-[#FF6B6B] text-white px-4 py-1 rounded-lg font-black text-[10px] tracking-wider uppercase rotate-6 border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] z-10">
-                    ★ HOGWARTS FAVORITE
-                  </div>
-                )}
+                {/* Visual Neobrutalist Rotating House Badge */}
+                <div className={`absolute top-4 -right-3 ${houseTheme.badgeBg} px-4 py-1 rounded-lg font-black text-[10px] tracking-wider uppercase rotate-6 shadow-[2px_2px_0px_rgba(0,0,0,0.15)] z-10`}>
+                  ★ {houseTheme.badgeText}
+                </div>
 
                 {/* Card Header: Profile Info and Compatibility */}
                 <div>
@@ -221,40 +271,40 @@ export default function SmartMatchFeed({
                     <img
                       src={match.user.photoURL}
                       alt={match.user.displayName}
-                      className="h-14 w-14 rounded-2xl object-cover border-2 border-[#2D2D2D] dark:border-white shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] shrink-0"
+                      className="h-14 w-14 rounded-2xl object-cover border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2.5px_2.5px_0px_#4A321E] shrink-0"
                       referrerPolicy="no-referrer"
                     />
                     <div className="flex-1 min-w-0 pr-16">
-                      <h4 className="text-lg font-black text-[#2D2D2D] dark:text-white truncate">
+                      <h4 className="text-lg font-black font-serif text-[#4A321E] dark:text-white truncate">
                         {match.user.displayName}
                       </h4>
-                      <p className="text-[11px] font-bold text-[#2D2D2D]/60 dark:text-white/60 mt-1 flex items-center gap-1.5">
+                      <p className="text-[11px] font-bold text-[#4A321E]/70 dark:text-white/70 mt-1 flex items-center gap-1.5">
                         <span>{match.user.location}</span>
                         <span>•</span>
-                        <span className="text-[#FF6B6B] font-black">★ {match.user.rating.toFixed(1)}</span>
-                        <span className="opacity-70">({match.user.totalReviews} spell trades)</span>
+                        <span className="text-[#740001] dark:text-[#FFE894] font-black">★ {match.user.rating.toFixed(1)}</span>
+                        <span className="opacity-75">({match.user.totalReviews} spell trades)</span>
                       </p>
                     </div>
                   </div>
 
                   {/* Bio block */}
-                  <p className="mt-4 text-xs font-medium text-[#2D2D2D]/80 dark:text-white/80 leading-relaxed line-clamp-3">
+                  <p className="mt-4 text-xs font-semibold text-[#4A321E]/85 dark:text-white/85 leading-relaxed line-clamp-3">
                     {match.user.bio}
                   </p>
 
                   {/* Score Indicator Pill */}
-                  <div className="mt-4 inline-flex items-center gap-1 bg-[#FFE66D] border-2 border-[#2D2D2D] dark:border-white px-3 py-1 rounded-xl shadow-[2px_2px_0px_#2D2D2D] dark:shadow-[2px_2px_0px_white] text-xs font-black text-[#2D2D2D]">
+                  <div className="mt-4 inline-flex items-center gap-1 bg-[#ECB939] border-2 border-[#4A321E] dark:border-[#FFE894] px-3 py-1 rounded-xl shadow-[2px_2px_0px_#4A321E] text-xs font-black text-[#1A0F00]">
                     <Percent className="h-3 w-3 stroke-[3]" />
                     <span>{match.compatibilityScore}% Magical Synergy</span>
                   </div>
 
                   {/* AI Match reasoning box */}
-                  <div className="mt-4 rounded-2xl bg-[#FFD23F]/10 dark:bg-[#FFD23F]/5 border-2 border-dashed border-[#2D2D2D]/30 dark:border-white/30 p-4">
-                    <span className="font-black text-xs text-[#2D2D2D] dark:text-white block mb-1 flex items-center gap-1">
-                      <Sparkles className="h-4 w-4 text-[#FF6B6B] shrink-0" />
+                  <div className="mt-4 rounded-2xl bg-[#ECB939]/10 dark:bg-[#FFE894]/5 border-2 border-dashed border-[#4A321E]/30 dark:border-[#FFE894]/30 p-4">
+                    <span className="font-black text-xs text-[#4A321E] dark:text-white block mb-1 flex items-center gap-1">
+                      <Sparkles className="h-4 w-4 text-[#740001] dark:text-[#FFE894] shrink-0" />
                       AI Match Alignment:
                     </span>
-                    <span className="text-xs text-[#2D2D2D]/80 dark:text-white/80 font-medium leading-relaxed block">
+                    <span className="text-xs text-[#4A321E]/80 dark:text-white/80 font-medium leading-relaxed block">
                       {match.reasoning}
                     </span>
                   </div>
@@ -263,7 +313,7 @@ export default function SmartMatchFeed({
                   <div className="mt-5 space-y-4">
                     {/* Can Teach */}
                     <div>
-                      <span className="block text-[10px] font-black text-[#FF6B6B] uppercase tracking-wider mb-2">
+                      <span className="block text-[10px] font-black text-[#740001] dark:text-[#FFE894] uppercase tracking-wider mb-2">
                         Spellcraft Offering (Tutor)
                       </span>
                       <div className="flex flex-wrap gap-1.5">
@@ -274,8 +324,8 @@ export default function SmartMatchFeed({
                               key={skill}
                               className={`rounded-lg border-2 px-2.5 py-1 text-xs font-black transition-all ${
                                 matchesNeed
-                                  ? "bg-[#FFE66D] border-[#2D2D2D] dark:border-white text-[#2D2D2D] shadow-[1.5px_1.5px_0px_#2D2D2D] dark:shadow-[1.5px_1.5px_0px_white]"
-                                  : "bg-[#F3F3F3] dark:bg-[#2D2D2D] border-[#2D2D2D]/10 dark:border-white/10 text-[#2D2D2D]/60 dark:text-white/60"
+                                  ? "bg-[#ECB939] border-[#4A321E] dark:border-[#FFE894] text-[#1A0F00] shadow-[1.5px_1.5px_0px_#4A321E]"
+                                  : `${houseTheme.teachTagBg}`
                               }`}
                             >
                               {skill} {matchesNeed && "★"}
@@ -287,7 +337,7 @@ export default function SmartMatchFeed({
 
                     {/* Wants to Learn */}
                     <div>
-                      <span className="block text-[10px] font-black text-[#4ECDC4] uppercase tracking-wider mb-2">
+                      <span className="block text-[10px] font-black text-[#1A472A] dark:text-[#4ECDC4] uppercase tracking-wider mb-2">
                         Magical Aspirations (Learner)
                       </span>
                       <div className="flex flex-wrap gap-1.5">
@@ -298,8 +348,8 @@ export default function SmartMatchFeed({
                               key={need}
                               className={`rounded-lg border-2 px-2.5 py-1 text-xs font-black transition-all ${
                                 matchesTeach
-                                  ? "bg-[#E1F7F5] dark:bg-[#1D7A73]/25 border-[#4ECDC4] dark:border-white text-[#1D7A73] dark:text-white shadow-[1.5px_1.5px_0px_#4ECDC4] dark:shadow-[1.5px_1.5px_0px_white]"
-                                  : "bg-[#F3F3F3] dark:bg-[#2D2D2D] border-[#2D2D2D]/10 dark:border-white/10 text-[#2D2D2D]/60 dark:text-white/60"
+                                  ? "bg-[#FFE894]/30 border-[#ECB939] text-[#740001] dark:text-[#FFE894] shadow-[1.5px_1.5px_0px_#ECB939]"
+                                  : "bg-[#F5F1E5] dark:bg-[#251B33] border-[#4A321E]/10 dark:border-white/10 text-[#4A321E]/60 dark:text-white/60"
                               }`}
                             >
                               {need} {matchesTeach && "★"}
@@ -312,18 +362,18 @@ export default function SmartMatchFeed({
                 </div>
 
                 {/* Dynamic Icebreaker & Actions footer block */}
-                <div className="mt-6 pt-4 border-t-2 border-[#2D2D2D]/10 dark:border-white/10 space-y-4">
+                <div className="mt-6 pt-4 border-t-2 border-[#4A321E]/10 dark:border-[#FFE894]/10 space-y-4">
                   {/* Generated Icebreaker prefill */}
-                  <div className="bg-[#4ECDC4]/5 dark:bg-[#4ECDC4]/10 rounded-2xl p-4 border-2 border-[#4ECDC4]/20">
-                    <span className="text-[10px] font-black uppercase text-[#1D7A73] dark:text-[#4ECDC4] tracking-widest block mb-1">Icebreaker Idea:</span>
-                    <p className="text-xs font-semibold text-[#2D2D2D] dark:text-white italic">"{match.icebreaker}"</p>
+                  <div className="bg-[#ECB939]/5 dark:bg-[#FFE894]/10 rounded-2xl p-4 border-2 border-[#ECB939]/20">
+                    <span className="text-[10px] font-black uppercase text-[#740001] dark:text-[#FFE894] tracking-widest block mb-1">Icebreaker Idea:</span>
+                    <p className="text-xs font-semibold text-[#4A321E] dark:text-white italic">"{match.icebreaker}"</p>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
                     {/* Chat & Coordinate button */}
                     <button
                       onClick={() => onStartChat(match.user, match.icebreaker)}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#2D2D2D] hover:bg-[#FDFCF8] dark:hover:bg-[#1E1E1E] py-3 text-xs font-black text-[#2D2D2D] dark:text-white shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#ECB939] hover:bg-[#ECB939]/90 py-3 text-xs font-black text-[#1A0F00] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer"
                     >
                       <MessageSquare className="h-4 w-4 stroke-[2.5]" />
                       Send Owl Post 🦉
@@ -335,7 +385,7 @@ export default function SmartMatchFeed({
                         const matchedSkill = match.user.skills.find(s => currentProfile.needs.includes(s)) || match.user.skills[0] || "";
                         onOpenSchedule(match.user, matchedSkill);
                       }}
-                      className="flex-1 flex items-center justify-center gap-1 rounded-xl border-2 border-[#2D2D2D] dark:border-white bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 py-3 text-xs font-black text-white shadow-[3px_3px_0px_#2D2D2D] dark:shadow-[3px_3px_0px_white] active:translate-y-0.5 active:shadow-[1px_1px_0px_#2D2D2D] dark:active:shadow-[1px_1px_0px_white] transition-all cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#740001] hover:bg-[#9B1B30] py-3 text-xs font-black text-[#FFE894] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer"
                     >
                       <span>Propose Spell Trade</span>
                       <ArrowRight className="h-4 w-4 stroke-[2.5]" />
