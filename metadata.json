@@ -1,0 +1,6 @@
+{
+  "name": "Community Skill-Sharing Platform",
+  "description": "A full-stack community skill-sharing and micro-volunteering platform with smart matchmaking, exchange scheduling, reviews, leaderboards, messaging, and a time-credit ledger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
