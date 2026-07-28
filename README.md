@@ -276,7 +276,7 @@ git push origin feature-name
 
 # 📄 License
 
-This project was developed for a Hackathon and is intended for educational purposes.
+This project was developed for a Hackathon and is intended for educational purposes only.
 
 ---
 
