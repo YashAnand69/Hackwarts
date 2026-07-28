@@ -230,4 +230,9 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start the server listener if we are not in a serverless function environment (like Vercel)
+if (!process.env.VERCEL && process.env.NODE_ENV !== "test") {
+  startServer();
+}
+
+export default app;
