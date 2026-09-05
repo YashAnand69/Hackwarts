@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { UserProfile } from "../types";
 import { db, doc, setDoc } from "../firebase";
 import { Flame, Sparkles, RefreshCw, Plus, Check, ShieldAlert, Award, Star } from "lucide-react";
+import { playCauldronBubble, playMagicalSparkle, playWandSwoosh } from "../utils/audio";
 
 interface AlchemyLabProps {
   currentProfile: UserProfile | null;
@@ -146,6 +147,7 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
     setCurrentOutcome(null);
     setHasInscribed(false);
     setInscribeError("");
+    playWandSwoosh();
 
     const steps = [
       "Gathering secret wizard vials...",
@@ -157,13 +159,16 @@ export default function AlchemyLab({ currentProfile, onProfileUpdated }: Alchemy
 
     let currentStepIdx = 0;
     setBrewStep(steps[currentStepIdx]);
+    playCauldronBubble();
 
     const stepInterval = setInterval(() => {
       currentStepIdx++;
       if (currentStepIdx < steps.length) {
         setBrewStep(steps[currentStepIdx]);
+        playCauldronBubble();
       } else {
         clearInterval(stepInterval);
+        playMagicalSparkle();
         
         // Compute outcome based on ingredients and temperature
         const seed = (selected1.length + selected2.length + temperature) % OUTCOMES.length;

@@ -80,5 +80,37 @@ export const MOCK_PROFILES: UserProfile[] = [
     location: "Hogwarts Greenhouse 3",
     isMock: true,
     createdAt: new Date().toISOString()
+  },
+  {
+    id: "cedric_diggory",
+    displayName: "Cedric Diggory",
+    email: "cedric@hogwarts.edu",
+    photoURL: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250",
+    bio: "Hufflepuff Prefect and Triwizard Champion. Wand: 12¼\" Ash with unicorn hair. Dedicated to fair play, Transfiguration duels, and Quidditch Seeker maneuvers. Always glad to mentor younger years in broom navigation or bubble-head charms.",
+    skills: ["Transfiguration & Bubble-Head Charm", "Quidditch Seeker Tactics", "Triwizard Defense"],
+    needs: ["Ancient Runes Translation", "Occlumency & Mind Shielding", "Advanced Potions"],
+    credits: 10.0,
+    rating: 4.9,
+    totalReviews: 22,
+    taughtHours: 30,
+    location: "Hufflepuff Common Room",
+    isMock: true,
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "cho_chang",
+    displayName: "Cho Chang",
+    email: "cho@hogwarts.edu",
+    photoURL: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=250",
+    bio: "Ravenclaw Seeker. Wand: 9\" Willow, dragon heartstring. Passionate about aerial charms, patronus charm training (Swan), and charms theory. Wanting to improve defense against dark curses.",
+    skills: ["Charms & Alohomora", "Expecto Patronum", "Broomstick Flying & Quidditch"],
+    needs: ["Defense Against the Dark Arts", "Advanced Potions", "Herbology & Venomous Tentacula"],
+    credits: 6.5,
+    rating: 4.8,
+    totalReviews: 16,
+    taughtHours: 20,
+    location: "Ravenclaw Tower",
+    isMock: true,
+    createdAt: new Date().toISOString()
   }
 ];

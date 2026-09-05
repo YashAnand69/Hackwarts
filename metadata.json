@@ -1,6 +1,6 @@
 {
-  "name": "Community Skill-Sharing Platform",
-  "description": "A full-stack community skill-sharing and micro-volunteering platform with smart matchmaking, exchange scheduling, reviews, leaderboards, messaging, and a time-credit ledger.",
+  "name": "Hogwarts Hourglass - Wizarding Skill Sharing",
+  "description": "A Harry Potter-themed decentralized wizarding skill-sharing, spell-practicing, and alchemy-crafting platform with Sorting Hat matchmaking, Owl Post messaging, House Cup leaderboards, and interactive wand spellcraft.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
