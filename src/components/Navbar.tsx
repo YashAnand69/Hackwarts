@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { UserProfile } from "../types";
-import { 
-  Coins, 
-  Flame, 
-  CalendarCheck, 
-  MessageSquare, 
-  Trophy, 
-  User, 
-  Sun, 
-  Moon, 
-  Wand2, 
-  Sparkles, 
-  Volume2, 
-  VolumeX, 
-  Search 
+import { useState } from "react";
+import { motion } from "motion/react";
+import {
+  Coins,
+  CalendarDays,
+  MessageCircle,
+  Trophy,
+  UserRound,
+  Sun,
+  Moon,
+  WandSparkles,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  Search,
+  Menu,
+  X,
+  GraduationCap,
+  FlaskConical,
+  ChevronDown,
+  ArrowUpRight,
 } from "lucide-react";
-import { setSoundEnabled, getSoundEnabled, playWandSwoosh } from "../utils/audio";
-
-interface NavbarProps {
+import { UserProfile } from "../types";
+import {
+  getSoundEnabled,
+  setSoundEnabled,
+  playWandSwoosh,
+} from "../utils/audio";
+interface Props {
   profiles: UserProfile[];
   activeProfile: UserProfile | null;
   onSelectProfile: (id: string) => void;
@@ -28,246 +37,215 @@ interface NavbarProps {
   onToggleTheme: () => void;
   onOpenSearch?: () => void;
 }
-
-export default function Navbar({
-  profiles,
-  activeProfile,
-  onSelectProfile,
-  activeTab,
-  setActiveTab,
-  onRequestCount,
-  theme,
-  onToggleTheme,
-  onOpenSearch
-}: NavbarProps) {
-  const [soundOn, setSoundOn] = useState<boolean>(true);
-
-  useEffect(() => {
-    setSoundOn(getSoundEnabled());
-  }, []);
-
-  const handleToggleSound = () => {
-    const next = !soundOn;
-    setSoundOn(next);
-    setSoundEnabled(next);
-    if (next) {
-      playWandSwoosh();
-    }
+export const navigation = [
+  {
+    id: "matches",
+    label: "The Great Hall",
+    subtitle: "Discover your people",
+    icon: GraduationCap,
+  },
+  {
+    id: "swaps",
+    label: "My Lessons",
+    subtitle: "Your next chapter",
+    icon: CalendarDays,
+  },
+  {
+    id: "messages",
+    label: "Owl Post",
+    subtitle: "Conversations",
+    icon: MessageCircle,
+  },
+  {
+    id: "alchemy",
+    label: "Potions Lab",
+    subtitle: "A little experimentation",
+    icon: FlaskConical,
+  },
+  {
+    id: "practice",
+    label: "Spell Practice",
+    subtitle: "Perfect your craft",
+    icon: WandSparkles,
+  },
+  {
+    id: "leaderboard",
+    label: "House Cup",
+    subtitle: "The hall of fame",
+    icon: Trophy,
+  },
+  {
+    id: "profile",
+    label: "My Wizard Profile",
+    subtitle: "Skills & Galleons",
+    icon: UserRound,
+  },
+];
+export default function Navbar(p: Props) {
+  const [open, setOpen] = useState(false);
+  const [sound, setSound] = useState(getSoundEnabled);
+  const go = (id: string) => {
+    p.setActiveTab(id);
+    setOpen(false);
+    playWandSwoosh();
   };
-
-  const navItems = [
-    { id: "matches", label: "Sorting Hat", icon: Flame },
-    { id: "swaps", label: "Owl Exchanges", icon: CalendarCheck, badge: onRequestCount },
-    { id: "messages", label: "Owl Post", icon: MessageSquare },
-    { id: "alchemy", label: "Cauldron Lab", icon: Wand2 },
-    { id: "practice", label: "Spell Training", icon: Sparkles },
-    { id: "leaderboard", label: "Goblet & Cup", icon: Trophy },
-    { id: "profile", label: "Portfolio", icon: User },
-  ];
-
   return (
-    <header className="sticky top-0 z-40 w-full border-b-4 border-[#ECB939] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#120D1A] text-[#2C1E14] dark:text-[#EDE7E0] transition-colors shadow-md">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        
-        {/* Logo & Search Trigger */}
-        <div className="flex items-center gap-3">
-          <div 
-            onClick={() => {
-              playWandSwoosh();
-              setActiveTab("matches");
-            }}
-            className="w-11 h-11 bg-[#740001] rounded-xl flex items-center justify-center text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] shrink-0 cursor-pointer hover:scale-105 transition-transform"
-            title="Hogwarts Hourglass - Home"
-          >
-            <span className="text-xl">🪄</span>
-          </div>
-
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span 
-                onClick={() => setActiveTab("matches")}
-                className="text-xl font-black font-serif tracking-tighter text-[#4A321E] dark:text-[#FFE894] select-none cursor-pointer"
-              >
-                HOGWARTS<span className="text-[#ECB939]">HOURGLASS</span>
-              </span>
-              <span className="rounded-lg bg-[#ECB939] border-2 border-[#4A321E] dark:border-[#FFE894] px-1.5 py-0.5 text-[9px] font-black text-[#1A0F00] tracking-wide uppercase shadow-[1px_1px_0px_#4A321E] hidden xl:inline-block">
-                🧙‍♂️ Alchemy & Spell Bank
-              </span>
-            </div>
-            <span className="text-[10px] font-bold text-[#4A321E]/60 dark:text-[#EDE7E0]/60 hidden sm:inline-block">
-              Decentralized Wizarding Skill Sharing & Time Bank
-            </span>
-          </div>
-
-          {/* Quick Lumos Search Button */}
-          {onOpenSearch && (
-            <button
-              onClick={() => {
-                playWandSwoosh();
-                onOpenSearch();
-              }}
-              className="ml-2 hidden lg:flex items-center gap-2 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#251B33] px-3 py-1.5 text-xs font-black text-[#4A321E] dark:text-[#FFE894] shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894] hover:bg-[#ECB939]/20 cursor-pointer transition-all"
-              title="Cast Lumos Search (Cmd+K)"
-            >
-              <Search className="h-3.5 w-3.5 stroke-[2.5]" />
-              <span>Cast Lumos</span>
-              <kbd className="rounded bg-[#FDF9EE] dark:bg-[#120D1A] px-1 py-0.5 text-[9px] font-mono border border-[#4A321E]/30">⌘K</kbd>
-            </button>
-          )}
+    <>
+      <header className="mobile-header">
+        <button className="brand" onClick={() => go("matches")}>
+          <span className="brand-mark">
+            <WandSparkles size={23} />
+          </span>
+          <span>
+            Hackwarts<small>THE MAGIC OF SHARING</small>
+          </span>
+        </button>
+        <button
+          className="icon-button"
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X /> : <Menu />}
+        </button>
+      </header>
+      {open && (
+        <button
+          className="sidebar-backdrop"
+          aria-label="Close navigation"
+          onClick={() => setOpen(false)}
+        />
+      )}
+      <aside className={`sidebar ${open ? "is-open" : ""}`}>
+        <button className="brand" onClick={() => go("matches")}>
+          <span className="brand-mark">
+            <WandSparkles size={25} />
+          </span>
+          <span>
+            Hackwarts<small>THE MAGIC OF SHARING</small>
+          </span>
+        </button>
+        <div className="sidebar-rule">
+          <span>✦</span>
         </div>
-
-        {/* Central Navigation Tabs */}
-        <nav className="hidden lg:flex items-center gap-1.5" aria-label="Tabs">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isSelected = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  playWandSwoosh();
-                  setActiveTab(item.id);
-                }}
-                className={`relative flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-black transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894]"
-                    : "text-[#4A321E] dark:text-[#EDE7E0] opacity-75 hover:opacity-100 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/80 border-2 border-transparent"
-                }`}
-              >
-                <Icon className="h-4 w-4 stroke-[2.5]" />
-                {item.label}
-                {item.badge && item.badge > 0 ? (
-                  <span className="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#ECB939] text-[9px] font-black text-[#1A0F00] border border-[#4A321E] animate-bounce">
-                    {item.badge}
-                  </span>
-                ) : null}
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Right Tools: Sound FX / Theme / Balance / Persona */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          
-          {/* Quick Search on mobile/tablet */}
-          {onOpenSearch && (
+        <p className="eyebrow sidebar-caption">YOUR WIZARDING WORLD</p>
+        <nav aria-label="Main navigation">
+          {navigation.map((n, i) => (
             <button
-              onClick={() => {
-                playWandSwoosh();
-                onOpenSearch();
-              }}
-              className="flex lg:hidden items-center justify-center h-9 w-9 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#251B33] text-[#4A321E] dark:text-[#FFE894] shadow-[2px_2px_0px_#4A321E] cursor-pointer"
-              aria-label="Quick Search"
+              key={n.id}
+              className={`nav-link ${p.activeTab === n.id ? "active" : ""}`}
+              aria-current={p.activeTab === n.id ? "page" : undefined}
+              onClick={() => go(n.id)}
             >
-              <Search className="h-4 w-4 stroke-[2.5]" />
+              {p.activeTab === n.id && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="nav-highlight"
+                  transition={{ type: "spring", stiffness: 350, damping: 35 }}
+                />
+              )}
+              <n.icon size={19} />
+              <span>{n.label}</span>
+              {n.id === "swaps" && p.onRequestCount > 0 ? (
+                <b className="nav-count">{p.onRequestCount}</b>
+              ) : p.activeTab === n.id ? (
+                <span className="nav-dot" />
+              ) : null}
+              {i === 2 && (
+                <span className="sr-only">End of community navigation</span>
+              )}
             </button>
-          )}
-
-          {/* Sound FX Toggle Button */}
-          <button
-            onClick={handleToggleSound}
-            className={`flex items-center justify-center h-9 w-9 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894] active:translate-y-0.5 transition-all cursor-pointer shrink-0 ${
-              soundOn
-                ? "bg-[#ECB939] text-[#1A0F00]"
-                : "bg-white dark:bg-[#251B33] text-[#4A321E]/60 dark:text-white/60"
-            }`}
-            title={soundOn ? "Mute Hogwarts spell audio" : "Enable Hogwarts spell audio"}
-            aria-label="Toggle Sound Effects"
-          >
-            {soundOn ? (
-              <Volume2 className="h-4.5 w-4.5 stroke-[2.5]" />
-            ) : (
-              <VolumeX className="h-4.5 w-4.5 stroke-[2.5]" />
-            )}
+          ))}
+        </nav>
+        <div className="sidebar-note">
+          <Sparkles size={20} />
+          <h3>
+            A little magic.
+            <br />A lot of possibility.
+          </h3>
+          <p>
+            Share what you know.
+            <br />
+            Discover what you could become.
+          </p>
+          <button onClick={() => go("practice")}>
+            Try a spell <ArrowUpRight size={15} />
           </button>
-
-          {/* Theme Toggle Button */}
-          <button
-            onClick={onToggleTheme}
-            className="flex items-center justify-center h-9 w-9 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#ECB939] dark:bg-[#251B33] text-[#1A0F00] dark:text-[#FFE894] shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894] hover:bg-[#ECB939]/90 active:translate-y-0.5 transition-all cursor-pointer shrink-0"
-            aria-label="Toggle Theme"
-            title={`Switch to ${theme === "light" ? "Dark" : "Light"} mode`}
-          >
-            {theme === "light" ? (
-              <Moon className="h-4.5 w-4.5 stroke-[2.5]" />
-            ) : (
-              <Sun className="h-4.5 w-4.5 stroke-[2.5]" />
-            )}
-          </button>
-
-          {/* Wallet Balance Badge */}
-          {activeProfile && (
-            <div 
-              onClick={() => setActiveTab("profile")}
-              className="hidden sm:flex items-center gap-1.5 rounded-full bg-[#ECB939] px-3.5 py-1.5 text-xs font-black text-[#1A0F00] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E] select-none cursor-pointer hover:scale-105 transition-transform" 
-              title="Click to view Vault & Ledger"
-            >
-              <Coins className="h-4 w-4 text-[#1A0F00] fill-[#FFD23F] stroke-[2.5]" />
-              <span>{activeProfile.credits.toFixed(1)} 🪙</span>
-            </div>
-          )}
-
-          {/* Persona Switcher Dropdown */}
-          <div className="flex items-center gap-2">
-            <div className="relative inline-block">
+        </div>
+        <div className="sidebar-bottom">
+          <div className="wallet">
+            <span>
+              <Coins size={17} /> YOUR GALLEONS
+            </span>
+            <strong>
+              {p.activeProfile?.credits.toFixed(1) || "0.0"}
+              <small>1 Galleon = 1 hour</small>
+            </strong>
+          </div>
+          <label className="persona">
+            <span className="avatar-initial">
+              {p.activeProfile?.displayName
+                .split(" ")
+                .map((x) => x[0])
+                .slice(0, 2)
+                .join("")}
+            </span>
+            <span>
+              <small>EXPLORING AS</small>
               <select
-                id="profile-switcher"
-                value={activeProfile?.id || ""}
-                onChange={(e) => onSelectProfile(e.target.value)}
-                className="block w-32 sm:w-36 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#F3EFE0] dark:bg-[#120D1A] py-1.5 pl-2.5 pr-6 text-xs font-black text-[#4A321E] dark:text-[#EDE7E0] shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894] focus:outline-none cursor-pointer"
+                aria-label="Active wizard profile"
+                value={p.activeProfile?.id || ""}
+                onChange={(e) => p.onSelectProfile(e.target.value)}
               >
-                {profiles.map((p) => (
-                  <option key={p.id} value={p.id} className="dark:bg-[#1E1E1E] dark:text-white">
-                    {p.displayName.split(" ")[0]} ({p.isMock ? "Demo" : "You"})
+                {p.profiles.map((u) => (
+                  <option value={u.id} key={u.id}>
+                    {u.displayName}
+                    {u.isMock ? " (Demo)" : ""}
                   </option>
                 ))}
               </select>
-            </div>
-
-            {/* Profile Avatar */}
-            {activeProfile && (
-              <img
-                src={activeProfile.photoURL}
-                alt={activeProfile.displayName}
-                onClick={() => setActiveTab("profile")}
-                className="h-9 w-9 rounded-full border-2 border-[#4A321E] dark:border-[#FFE894] object-cover shadow-[2px_2px_0px_#4A321E] dark:shadow-[2px_2px_0px_#FFE894] cursor-pointer hover:scale-105 transition-transform"
-                referrerPolicy="no-referrer"
-                title={activeProfile.displayName}
-              />
-            )}
-          </div>
+            </span>
+            <ChevronDown size={14} />
+          </label>
+        </div>
+      </aside>
+      <div className="topbar">
+        <span className="breadcrumb">
+          Hogwarts <span>/</span>{" "}
+          {navigation.find((n) => n.id === p.activeTab)?.label}
+        </span>
+        <div className="topbar-tools">
+          <button className="search-trigger" onClick={p.onOpenSearch}>
+            <Search size={15} />
+            <span>Search the castle</span>
+            <kbd>⌘ K</kbd>
+          </button>
+          <button
+            className="icon-button"
+            aria-label={sound ? "Mute sound effects" : "Enable sound effects"}
+            aria-pressed={sound}
+            onClick={() => {
+              setSound(!sound);
+              setSoundEnabled(!sound);
+            }}
+          >
+            {sound ? <Volume2 size={17} /> : <VolumeX size={17} />}
+          </button>
+          <button
+            className="icon-button"
+            aria-label={`Switch to ${p.theme === "dark" ? "light" : "dark"} theme`}
+            onClick={p.onToggleTheme}
+          >
+            {p.theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+          <button
+            className="topbar-avatar avatar-initial"
+            aria-label="Open my profile"
+            onClick={() => go("profile")}
+          >
+            {p.activeProfile?.displayName[0] || "H"}
+          </button>
         </div>
       </div>
-
-      {/* Mobile Navigation Tabs */}
-      <div className="flex border-t-2 border-[#4A321E]/20 dark:border-[#FFE894]/20 bg-[#FDF9EE] dark:bg-[#120D1A] lg:hidden justify-around py-2 px-1 overflow-x-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isSelected = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => {
-                playWandSwoosh();
-                setActiveTab(item.id);
-              }}
-              className={`relative flex flex-col items-center gap-1 text-[10px] font-black min-w-[50px] py-1 px-1.5 rounded-xl transition-all cursor-pointer ${
-                isSelected
-                  ? "text-[#FFE894] bg-[#740001] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[1px_1px_0px_#4A321E]"
-                  : "text-[#4A321E]/70 dark:text-[#EDE7E0]/70 border-2 border-transparent"
-              }`}
-            >
-              <Icon className="h-4.5 w-4.5 stroke-[2.5]" />
-              <span className="truncate max-w-[54px]">{item.label.split(" ")[0]}</span>
-              {item.badge && item.badge > 0 ? (
-                <span className="absolute -top-1 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#ECB939] text-[8px] font-black text-[#1A0F00] border border-[#4A321E]">
-                  {item.badge}
-                </span>
-              ) : null}
-            </button>
-          );
-        })}
-      </div>
-    </header>
+    </>
   );
 }

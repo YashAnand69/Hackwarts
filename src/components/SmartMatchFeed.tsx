@@ -1,403 +1,484 @@
-import React, { useState, useEffect } from "react";
-import { UserProfile, SmartMatch } from "../types";
-import { Sparkles, ArrowRight, MessageSquare, Calendar, Percent, Compass, Search } from "lucide-react";
-
-interface SmartMatchFeedProps {
+import { useState, useEffect, useMemo, useRef } from "react";
+import { motion } from "motion/react";
+import {
+  Search,
+  SlidersHorizontal,
+  ArrowUpRight,
+  ArrowRight,
+  Sparkles,
+  Star,
+  MessageCircle,
+  BookOpen,
+  Clock3,
+  RotateCw,
+  X,
+  Bookmark,
+  WandSparkles,
+  UsersRound,
+} from "lucide-react";
+import type { UserProfile, SmartMatch } from "../types";
+import { localMatches, houseOf, sharesSkill } from "../utils/matching";
+import CastleScene from "./CastleScene";
+interface Props {
   currentProfile: UserProfile | null;
   allProfiles: UserProfile[];
-  onOpenSchedule: (targetProfile: UserProfile, skill: string) => void;
-  onStartChat: (targetProfile: UserProfile, prefilledMessage: string) => void;
+  onOpenSchedule: (p: UserProfile, skill: string) => void;
+  onStartChat: (p: UserProfile, text: string) => void;
+  onNavigate?: (tab: string) => void;
 }
-
+const houses = [
+  "All houses",
+  "Gryffindor",
+  "Slytherin",
+  "Ravenclaw",
+  "Hufflepuff",
+];
 export default function SmartMatchFeed({
   currentProfile,
   allProfiles,
   onOpenSchedule,
-  onStartChat
-}: SmartMatchFeedProps) {
-  const [matches, setMatches] = useState<SmartMatch[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState<"all" | "teaches_my_need" | "learns_my_skill">("all");
-  const [apiError, setApiError] = useState("");
-
-  const runMatchmaking = async () => {
-    if (!currentProfile) return;
-    setIsLoading(true);
-    setApiError("");
+  onStartChat,
+  onNavigate,
+}: Props) {
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [house, setHouse] = useState("All houses");
+  const [sort, setSort] = useState("compatibility");
+  const [advanced, setAdvanced] = useState(false);
+  const [remote, setRemote] = useState<{
+    owner: string;
+    matches: SmartMatch[];
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState("");
+  const controller = useRef<AbortController | null>(null);
+  const [saved, setSaved] = useState<string[]>(() => {
     try {
-      const response = await fetch("/api/matchmaking", {
+      return JSON.parse(localStorage.getItem("hackwarts-saved") || "[]");
+    } catch {
+      return [];
+    }
+  });
+  useEffect(() => () => controller.current?.abort(), []);
+  useEffect(() => {
+    controller.current?.abort();
+    setLoading(false);
+    setNotice("");
+    setRemote(null);
+  }, [currentProfile?.id]);
+  const matches = useMemo(
+    () =>
+      currentProfile
+        ? remote?.owner === currentProfile.id
+          ? remote.matches
+          : localMatches(currentProfile, allProfiles)
+        : [],
+    [currentProfile, allProfiles, remote],
+  );
+  const refresh = async () => {
+    if (!currentProfile || loading) return;
+    controller.current?.abort();
+    const abort = new AbortController();
+    controller.current = abort;
+    setLoading(true);
+    setNotice("");
+    const timer = setTimeout(() => abort.abort(), 12000);
+    try {
+      const r = await fetch("/api/matchmaking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          currentProfile,
-          allProfiles
-        })
+        body: JSON.stringify({ currentProfile, allProfiles }),
+        signal: abort.signal,
       });
-      const data = await response.json();
-      if (data.matches && Array.isArray(data.matches)) {
-        // Map matched IDs back to full profiles
-        const mappedMatches: SmartMatch[] = data.matches.map((m: any) => {
-          const matchedUser = allProfiles.find(p => p.id === m.userId);
-          return {
-            user: matchedUser,
-            commonInterests: m.commonInterests,
-            compatibilityScore: m.compatibilityScore,
-            icebreaker: m.icebreaker,
-            reasoning: m.reasoning
-          };
-        }).filter((m: SmartMatch) => m.user !== undefined);
-
-        // Sort by compatibility score descending
-        mappedMatches.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
-        setMatches(mappedMatches);
-      } else if (data.error) {
-        setApiError(data.error);
-      }
-    } catch (err) {
-      console.error("Matchmaking call failed:", err);
-      setApiError("Could not calculate AI matching. Using fallback rules.");
-      
-      // Fallback local matching
-      const candidates = allProfiles.filter(p => p.id !== currentProfile.id);
-      const fallbackMatches = candidates.map(c => {
-        const commonTeachLearn = c.skills.filter(s => currentProfile.needs.includes(s));
-        const commonLearnTeach = c.needs.filter(n => currentProfile.skills.includes(n));
-        const commonInterests = Array.from(new Set([...commonTeachLearn, ...commonLearnTeach]));
-        const score = Math.min(40 + (commonInterests.length * 20) + Math.round(c.rating * 4), 100);
-
-        return {
-          user: c,
-          commonInterests,
-          compatibilityScore: score,
-          icebreaker: `Hi ${c.displayName}! I notice we share interests in ${commonInterests.join(", ") || "skill sharing"}. I'd love to learn from you!`,
-          reasoning: `Matches based on mutual interest tags: ${commonInterests.join(", ") || "General Volunteering"}.`
-        };
+      if (!r.ok) throw new Error("Matchmaking unavailable");
+      const data = await r.json();
+      if (!Array.isArray(data.matches)) throw new Error("Invalid response");
+      const baseline = localMatches(currentProfile, allProfiles);
+      const enhanced = baseline.map((m) => {
+        const x = data.matches.find((n: any) => n.userId === m.user.id);
+        return x &&
+          Number.isFinite(x.compatibilityScore) &&
+          Array.isArray(x.commonInterests) &&
+          typeof x.reasoning === "string" &&
+          typeof x.icebreaker === "string"
+          ? {
+              ...m,
+              compatibilityScore: Math.max(
+                0,
+                Math.min(100, x.compatibilityScore),
+              ),
+              reasoning: x.reasoning,
+              icebreaker: x.icebreaker,
+            }
+          : m;
       });
-      setMatches(fallbackMatches.sort((a, b) => b.compatibilityScore - a.compatibilityScore));
+      setRemote({ owner: currentProfile.id, matches: enhanced });
+      setNotice("Your matches have been refreshed.");
+    } catch {
+      if (controller.current === abort)
+        setNotice(
+          "The Sorting Hat is resting. Skill-based matches are ready below.",
+        );
     } finally {
-      setIsLoading(false);
+      clearTimeout(timer);
+      if (controller.current === abort) setLoading(false);
     }
   };
-
-  useEffect(() => {
-    runMatchmaking();
-  }, [currentProfile, allProfiles]);
-
-  if (!currentProfile) {
-    return (
-      <div className="flex h-96 items-center justify-center rounded-2xl bg-white border-4 border-[#2D2D2D] shadow-[4px_4px_0px_#2D2D2D] p-6 text-center">
-        <p className="text-sm font-black text-[#2D2D2D] font-sans">No active profile. Select one in the top right.</p>
-      </div>
+  const toggleSave = (id: string) => {
+    const next = saved.includes(id)
+      ? saved.filter((x) => x !== id)
+      : [...saved, id];
+    setSaved(next);
+    localStorage.setItem("hackwarts-saved", JSON.stringify(next));
+  };
+  const filtered = matches
+    .filter((m) => {
+      const text = [
+        m.user.displayName,
+        m.user.bio,
+        m.user.location,
+        houseOf(m.user),
+        ...m.user.skills,
+        ...m.user.needs,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return (
+        text.includes(query.trim().toLowerCase()) &&
+        (house === "All houses" || houseOf(m.user) === house) &&
+        (filter === "all" ||
+          (filter === "saved" && saved.includes(m.user.id)) ||
+          (filter === "learn" &&
+            !!currentProfile &&
+            sharesSkill(m.user.skills, currentProfile.needs).length > 0) ||
+          (filter === "teach" &&
+            !!currentProfile &&
+            sharesSkill(m.user.needs, currentProfile.skills).length > 0))
+      );
+    })
+    .sort((a, b) =>
+      sort === "rating"
+        ? b.user.rating - a.user.rating
+        : sort === "name"
+          ? a.user.displayName.localeCompare(b.user.displayName)
+          : b.compatibilityScore - a.compatibilityScore,
     );
-  }
-
-  // Filter & Search the matches
-  const filteredMatches = matches.filter(match => {
-    // Search
-    const searchString = `${match.user.displayName} ${match.user.bio} ${match.user.skills.join(" ")} ${match.user.needs.join(" ")}`.toLowerCase();
-    const matchesSearch = searchString.includes(searchQuery.toLowerCase());
-
-    // Category Filter
-    if (filterType === "teaches_my_need") {
-      // Candidate teaches something active profile needs
-      const teachesNeed = match.user.skills.some(skill => currentProfile.needs.includes(skill));
-      return matchesSearch && teachesNeed;
-    }
-    if (filterType === "learns_my_skill") {
-      // Candidate wants to learn something active profile teaches
-      const wantsSkill = match.user.needs.some(need => currentProfile.skills.includes(need));
-      return matchesSearch && wantsSkill;
-    }
-
-    return matchesSearch;
-  });
-
+  const reset = () => {
+    setQuery("");
+    setFilter("all");
+    setHouse("All houses");
+  };
   return (
-    <div className="space-y-8 text-[#2C1E14] dark:text-white">
-      
-      {/* Search and Filters Banner Container */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 rounded-3xl border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-5 shadow-[6px_6px_0px_#4A321E] dark:shadow-[6px_6px_0px_#FFE894] transition-colors">
-        
-        {/* Search Input */}
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-[#4A321E] dark:text-[#FFE894] opacity-60" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by student name, spells, Hogwarts House..."
-            className="block w-full rounded-2xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#FDF9EE] dark:bg-[#251B33] pl-11 pr-4 py-3 text-xs font-black text-[#4A321E] dark:text-[#EDE7E0] placeholder-[#4A321E]/40 dark:placeholder-white/40 focus:outline-none"
-          />
+    <div className="discover-page">
+      <section className="welcome-heading">
+        <div>
+          <p className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p>
+          <h1>
+            Welcome to the Great Hall<span className="heading-star">✧</span>
+          </h1>
+          <p>
+            Every wizard has something to teach. Every wizard has something to
+            learn.
+          </p>
         </div>
-
-        {/* Filter Tab Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
+        <span className="term-badge">
+          <span /> The castle is open
+        </span>
+      </section>
+      <section className="hero-panel">
+        <div className="hero-copy">
+          <p className="eyebrow">
+            <span>✦</span> KNOWLEDGE IS ITS OWN KIND OF MAGIC
+          </p>
+          <h2>
+            Great things begin
+            <br />
+            with a little <em>exchange.</em>
+          </h2>
+          <p>
+            Find your magical match, trade an hour of your craft,
+            <br className="desktop-break" /> and discover a world beyond your
+            own house.
+          </p>
           <button
-            onClick={() => setFilterType("all")}
-            className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
-              filterType === "all"
-                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
-                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
-            }`}
+            className="gold-button"
+            onClick={() => document.getElementById("discover-search")?.focus()}
           >
-            All Students
+            Find my magical match <ArrowRight size={17} />
           </button>
-          <button
-            onClick={() => setFilterType("teaches_my_need")}
-            className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
-              filterType === "teaches_my_need"
-                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
-                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
-            }`}
-          >
-            Tutors My House Needs
-          </button>
-          <button
-            onClick={() => setFilterType("learns_my_skill")}
-            className={`rounded-xl px-4 py-2.5 text-xs font-black transition-all cursor-pointer ${
-              filterType === "learns_my_skill"
-                ? "bg-[#740001] text-[#FFE894] border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2px_2px_0px_#4A321E]"
-                : "bg-white dark:bg-[#251B33] text-[#4A321E] dark:text-[#EDE7E0] border-2 border-[#4A321E]/10 dark:border-white/10 opacity-80 hover:bg-[#F3EFE0] dark:hover:bg-[#251B33]/60 hover:opacity-100"
-            }`}
-          >
-            Seeks My Spellcraft
-          </button>
+          <span className="hero-footnote">
+            <UsersRound size={14} /> {allProfiles.length} wizards. Endless
+            possibilities.
+          </span>
         </div>
-
-        {/* Re-sync Button */}
-        <button
-          onClick={runMatchmaking}
-          disabled={isLoading}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-[#ECB939] border-2 border-[#4A321E] dark:border-[#FFE894] px-4 py-2.5 text-xs font-black text-[#1A0F00] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] hover:bg-[#ECB939]/90 active:translate-y-0.5 disabled:opacity-50 transition-all cursor-pointer"
-        >
-          <Compass className={`h-4.5 w-4.5 text-[#1A0F00] stroke-[2.5] ${isLoading ? "animate-spin" : ""}`} />
-          Consult Sorting Hat
+        <CastleScene />
+        <span className="hero-caption">
+          HOGWARTS SCHOOL OF WITCHCRAFT & WIZARDRY
+        </span>
+      </section>
+      <section className="stat-row" aria-label="Your activity">
+        <button onClick={() => onNavigate?.("profile")}>
+          <span className="stat-icon gold">
+            <Sparkles size={20} />
+          </span>
+          <span>
+            <small>YOUR TIME, YOUR TREASURE</small>
+            <strong>
+              {currentProfile?.credits.toFixed(1) || "0.0"}{" "}
+              <em>Galleons to explore</em>
+            </strong>
+          </span>
+          <ArrowUpRight size={16} />
         </button>
-      </div>
-
-      {/* Matching Feed Content */}
-      {isLoading ? (
-        <div className="flex flex-col h-96 items-center justify-center rounded-3xl border-4 border-[#4A321E] dark:border-[#FFE894] bg-white dark:bg-[#1C1625] p-8 shadow-[8px_8px_0px_#ECB939] text-center transition-colors">
-          <div className="relative mb-4">
-            <div className="h-16 w-16 rounded-full border-4 border-[#740001]/20 border-t-[#740001] animate-spin"></div>
-            <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-[#ECB939] animate-pulse" />
+        <button onClick={() => onNavigate?.("profile")}>
+          <span className="stat-icon green">
+            <Clock3 size={20} />
+          </span>
+          <span>
+            <small>MAGIC YOU'VE SHARED</small>
+            <strong>
+              {currentProfile?.taughtHours || 0} <em>hours of teaching</em>
+            </strong>
+          </span>
+          <ArrowUpRight size={16} />
+        </button>
+        <button
+          onClick={() => {
+            setFilter("learn");
+            document.getElementById("discover-search")?.focus();
+          }}
+        >
+          <span className="stat-icon violet">
+            <BookOpen size={20} />
+          </span>
+          <span>
+            <small>YOUR NEXT ADVENTURE</small>
+            <strong>
+              {currentProfile?.needs.length || 0} <em>subjects to discover</em>
+            </strong>
+          </span>
+          <ArrowUpRight size={16} />
+        </button>
+      </section>
+      <section id="matches" className="match-section">
+        <div className="section-title">
+          <div>
+            <p className="eyebrow">THE SORTING HAT HAS A FEW IDEAS</p>
+            <h2>Your kind of magic</h2>
+            <p>
+              Kindred spirits, complementary skills, and a little serendipity.
+            </p>
           </div>
-          <h3 className="text-xl font-black text-[#4A321E] dark:text-white font-serif">Sorting Hat Matchmaking...</h3>
-          <p className="mt-2 text-xs text-[#4A321E]/75 dark:text-white/75 max-w-sm">
-            Aligning magical disciplines, casting compatibility charms, and preparing custom owl-post greetings!
-          </p>
+          <button
+            className="subtle-button"
+            disabled={loading}
+            onClick={refresh}
+          >
+            <RotateCw size={15} className={loading ? "animate-spin" : ""} />
+            {loading ? "Consulting the Hat…" : "Refresh matches"}
+          </button>
         </div>
-      ) : filteredMatches.length === 0 ? (
-        <div className="flex flex-col h-96 items-center justify-center rounded-3xl border-4 border-[#2D2D2D] dark:border-white bg-white dark:bg-[#1E1E1E] p-8 shadow-[6px_6px_0px_#2D2D2D] dark:shadow-[6px_6px_0px_white] text-center transition-colors">
-          <Compass className="h-14 w-14 text-[#FF6B6B] mb-4" />
-          <h3 className="text-lg font-black text-[#2D2D2D] dark:text-white">No matches found</h3>
-          <p className="mt-1 text-xs text-[#2D2D2D]/60 dark:text-white/60 max-w-sm">
-            Add more teach or learn tag requirements to your Profile to find compatible swaps!
-          </p>
+        <div className="discovery-toolbar">
+          <div className="search-field">
+            <Search size={18} />
+            <input
+              id="discover-search"
+              aria-label="Search wizards, skills or houses"
+              placeholder="Search wizards, spells, or subjects…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button aria-label="Clear search" onClick={() => setQuery("")}>
+                <X size={15} />
+              </button>
+            )}
+          </div>
+          <select
+            aria-label="Filter by house"
+            value={house}
+            onChange={(e) => setHouse(e.target.value)}
+          >
+            {houses.map((h) => (
+              <option key={h}>{h}</option>
+            ))}
+          </select>
+          <button
+            className={`filter-button ${advanced ? "selected" : ""}`}
+            aria-expanded={advanced}
+            onClick={() => setAdvanced(!advanced)}
+          >
+            <SlidersHorizontal size={16} />
+            <span>Filters</span>
+          </button>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {filteredMatches.map((match) => {
-            const isHighMatch = match.compatibilityScore >= 75;
-            
-            // Dynamic House Theme resolver
-            const loc = (match.user.location || "").toLowerCase();
-            let houseTheme = {
-              border: "border-[#4A321E] dark:border-[#FFE894]",
-              shadow: "shadow-[8px_8px_0px_#4A321E] dark:shadow-[8px_8px_0px_#FFE894]",
-              bg: "bg-white dark:bg-[#1C1625]",
-              badgeBg: "bg-[#ECB939] text-[#1A0F00] border-2 border-[#4A321E]",
-              badgeText: "Hogwarts Student",
-              accentColor: "#ECB939",
-              teachTagBg: "bg-[#ECB939]/10 text-[#4A321E] border-[#4A321E]/30"
-            };
-
-            if (loc.includes("gryffindor")) {
-              houseTheme = {
-                border: "border-[#740001] dark:border-[#ECB939]",
-                shadow: "shadow-[8px_8px_0px_#740001] dark:shadow-[8px_8px_0px_#ECB939]",
-                bg: "bg-[#FFF9F9] dark:bg-[#1C090D]",
-                badgeBg: "bg-[#740001] text-[#FFE894] border-2 border-[#ECB939]",
-                badgeText: "Gryffindor House 🦁",
-                accentColor: "#740001",
-                teachTagBg: "bg-[#740001]/10 text-[#740001] dark:text-[#FFE894] border-[#740001]/20"
-              };
-            } else if (loc.includes("slytherin")) {
-              houseTheme = {
-                border: "border-[#1A472A] dark:border-[#2E6F40]",
-                shadow: "shadow-[8px_8px_0px_#1A472A] dark:shadow-[8px_8px_0px_#2E6F40]",
-                bg: "bg-[#F4FAF6] dark:bg-[#07140B]",
-                badgeBg: "bg-[#1A472A] text-white border-2 border-[#2E6F40]",
-                badgeText: "Slytherin House 🐍",
-                accentColor: "#1A472A",
-                teachTagBg: "bg-[#1A472A]/10 text-[#1A472A] dark:text-[#E0FFF0] border-[#1A472A]/20"
-              };
-            } else if (loc.includes("ravenclaw")) {
-              houseTheme = {
-                border: "border-[#0E2140] dark:border-[#4E93DC]",
-                shadow: "shadow-[8px_8px_0px_#0E2140] dark:shadow-[8px_8px_0px_#4E93DC]",
-                bg: "bg-[#F4F8FA] dark:bg-[#06101F]",
-                badgeBg: "bg-[#0E2140] text-white border-2 border-[#4E93DC]",
-                badgeText: "Ravenclaw House 🦅",
-                accentColor: "#0E2140",
-                teachTagBg: "bg-[#0E2140]/10 text-[#0E2140] dark:text-[#E0F0FF] border-[#0E2140]/20"
-              };
-            } else if (loc.includes("hufflepuff") || loc.includes("greenhouse") || loc.includes("herbology")) {
-              houseTheme = {
-                border: "border-[#4A321E] dark:border-[#FFE894]",
-                shadow: "shadow-[8px_8px_0px_#ECB939] dark:shadow-[8px_8px_0px_#FFE894]",
-                bg: "bg-[#FCFAF2] dark:bg-[#1E1908]",
-                badgeBg: "bg-[#ECB939] text-[#1A0F00] border-2 border-[#4A321E]",
-                badgeText: "Hufflepuff House 🦡",
-                accentColor: "#ECB939",
-                teachTagBg: "bg-[#ECB939]/15 text-[#4A321E] dark:text-[#FFE894] border-[#ECB939]/20"
-              };
-            }
-
-            return (
-              <div
-                key={match.user.id}
-                className={`flex flex-col justify-between rounded-[2.5rem] border-4 ${houseTheme.border} ${houseTheme.bg} p-6 ${houseTheme.shadow} relative overflow-hidden transition-all hover:-translate-x-0.5 hover:-translate-y-0.5`}
+        {advanced && (
+          <div className="advanced-filters">
+            <label>
+              Sort by{" "}
+              <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="compatibility">Best match</option>
+                <option value="rating">Highest rating</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </label>
+            <button
+              className="subtle-button"
+              onClick={() => {
+                reset();
+                setSort("compatibility");
+              }}
+            >
+              Reset filters
+            </button>
+          </div>
+        )}
+        <div className="filter-row">
+          <div className="filter-tabs" role="group" aria-label="Match type">
+            {[
+              { id: "all", label: "All wizards" },
+              { id: "learn", label: "I want to learn" },
+              { id: "teach", label: "I can teach" },
+              { id: "saved", label: "Saved" },
+            ].map((t) => (
+              <button
+                key={t.id}
+                aria-pressed={filter === t.id}
+                className={filter === t.id ? "selected" : ""}
+                onClick={() => setFilter(t.id)}
               >
-                {/* Visual Neobrutalist Rotating House Badge */}
-                <div className={`absolute top-4 -right-3 ${houseTheme.badgeBg} px-4 py-1 rounded-lg font-black text-[10px] tracking-wider uppercase rotate-6 shadow-[2px_2px_0px_rgba(0,0,0,0.15)] z-10`}>
-                  ★ {houseTheme.badgeText}
-                </div>
-
-                {/* Card Header: Profile Info and Compatibility */}
-                <div>
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={match.user.photoURL}
-                      alt={match.user.displayName}
-                      className="h-14 w-14 rounded-2xl object-cover border-2 border-[#4A321E] dark:border-[#FFE894] shadow-[2.5px_2.5px_0px_#4A321E] shrink-0"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="flex-1 min-w-0 pr-16">
-                      <h4 className="text-lg font-black font-serif text-[#4A321E] dark:text-white truncate">
-                        {match.user.displayName}
-                      </h4>
-                      <p className="text-[11px] font-bold text-[#4A321E]/70 dark:text-white/70 mt-1 flex items-center gap-1.5">
-                        <span>{match.user.location}</span>
-                        <span>•</span>
-                        <span className="text-[#740001] dark:text-[#FFE894] font-black">★ {match.user.rating.toFixed(1)}</span>
-                        <span className="opacity-75">({match.user.totalReviews} spell trades)</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Bio block */}
-                  <p className="mt-4 text-xs font-semibold text-[#4A321E]/85 dark:text-white/85 leading-relaxed line-clamp-3">
-                    {match.user.bio}
-                  </p>
-
-                  {/* Score Indicator Pill */}
-                  <div className="mt-4 inline-flex items-center gap-1 bg-[#ECB939] border-2 border-[#4A321E] dark:border-[#FFE894] px-3 py-1 rounded-xl shadow-[2px_2px_0px_#4A321E] text-xs font-black text-[#1A0F00]">
-                    <Percent className="h-3 w-3 stroke-[3]" />
-                    <span>{match.compatibilityScore}% Magical Synergy</span>
-                  </div>
-
-                  {/* AI Match reasoning box */}
-                  <div className="mt-4 rounded-2xl bg-[#ECB939]/10 dark:bg-[#FFE894]/5 border-2 border-dashed border-[#4A321E]/30 dark:border-[#FFE894]/30 p-4">
-                    <span className="font-black text-xs text-[#4A321E] dark:text-white block mb-1 flex items-center gap-1">
-                      <Sparkles className="h-4 w-4 text-[#740001] dark:text-[#FFE894] shrink-0" />
-                      AI Match Alignment:
-                    </span>
-                    <span className="text-xs text-[#4A321E]/80 dark:text-white/80 font-medium leading-relaxed block">
-                      {match.reasoning}
-                    </span>
-                  </div>
-
-                  {/* Skill Tag grids */}
-                  <div className="mt-5 space-y-4">
-                    {/* Can Teach */}
-                    <div>
-                      <span className="block text-[10px] font-black text-[#740001] dark:text-[#FFE894] uppercase tracking-wider mb-2">
-                        Spellcraft Offering (Tutor)
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {match.user.skills.map((skill) => {
-                          const matchesNeed = currentProfile.needs.includes(skill);
-                          return (
-                            <span
-                              key={skill}
-                              className={`rounded-lg border-2 px-2.5 py-1 text-xs font-black transition-all ${
-                                matchesNeed
-                                  ? "bg-[#ECB939] border-[#4A321E] dark:border-[#FFE894] text-[#1A0F00] shadow-[1.5px_1.5px_0px_#4A321E]"
-                                  : `${houseTheme.teachTagBg}`
-                              }`}
-                            >
-                              {skill} {matchesNeed && "★"}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Wants to Learn */}
-                    <div>
-                      <span className="block text-[10px] font-black text-[#1A472A] dark:text-[#4ECDC4] uppercase tracking-wider mb-2">
-                        Magical Aspirations (Learner)
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {match.user.needs.map((need) => {
-                          const matchesTeach = currentProfile.skills.includes(need);
-                          return (
-                            <span
-                              key={need}
-                              className={`rounded-lg border-2 px-2.5 py-1 text-xs font-black transition-all ${
-                                matchesTeach
-                                  ? "bg-[#FFE894]/30 border-[#ECB939] text-[#740001] dark:text-[#FFE894] shadow-[1.5px_1.5px_0px_#ECB939]"
-                                  : "bg-[#F5F1E5] dark:bg-[#251B33] border-[#4A321E]/10 dark:border-white/10 text-[#4A321E]/60 dark:text-white/60"
-                              }`}
-                            >
-                              {need} {matchesTeach && "★"}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dynamic Icebreaker & Actions footer block */}
-                <div className="mt-6 pt-4 border-t-2 border-[#4A321E]/10 dark:border-[#FFE894]/10 space-y-4">
-                  {/* Generated Icebreaker prefill */}
-                  <div className="bg-[#ECB939]/5 dark:bg-[#FFE894]/10 rounded-2xl p-4 border-2 border-[#ECB939]/20">
-                    <span className="text-[10px] font-black uppercase text-[#740001] dark:text-[#FFE894] tracking-widest block mb-1">Icebreaker Idea:</span>
-                    <p className="text-xs font-semibold text-[#4A321E] dark:text-white italic">"{match.icebreaker}"</p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    {/* Chat & Coordinate button */}
-                    <button
-                      onClick={() => onStartChat(match.user, match.icebreaker)}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#ECB939] hover:bg-[#ECB939]/90 py-3 text-xs font-black text-[#1A0F00] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer"
-                    >
-                      <MessageSquare className="h-4 w-4 stroke-[2.5]" />
-                      Send Owl Post 🦉
-                    </button>
-
-                    {/* Lesson Request submission */}
-                    <button
-                      onClick={() => {
-                        const matchedSkill = match.user.skills.find(s => currentProfile.needs.includes(s)) || match.user.skills[0] || "";
-                        onOpenSchedule(match.user, matchedSkill);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-1 rounded-xl border-2 border-[#4A321E] dark:border-[#FFE894] bg-[#740001] hover:bg-[#9B1B30] py-3 text-xs font-black text-[#FFE894] shadow-[3px_3px_0px_#4A321E] dark:shadow-[3px_3px_0px_#FFE894] active:translate-y-0.5 active:shadow-[1px_1px_0px_#4A321E] transition-all cursor-pointer"
-                    >
-                      <span>Propose Spell Trade</span>
-                      <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            );
-          })}
+                {t.label}
+                {t.id === "saved" && saved.length > 0 ? (
+                  <span>{saved.length}</span>
+                ) : null}
+              </button>
+            ))}
+          </div>
+          <span className="results-count" aria-live="polite">
+            {filtered.length} {filtered.length === 1 ? "wizard" : "wizards"}{" "}
+            found
+          </span>
         </div>
-      )}
+        {notice && (
+          <p className="match-notice" role="status">
+            <Sparkles size={14} />
+            {notice}
+          </p>
+        )}
+        {filtered.length === 0 ? (
+          <div className="empty-state">
+            <WandSparkles size={36} />
+            <h3>No wizards on this path… yet.</h3>
+            <p>
+              Try a different subject or house, or explore all your matches.
+            </p>
+            <button className="gold-button" onClick={reset}>
+              Show all wizards <ArrowRight size={16} />
+            </button>
+          </div>
+        ) : (
+          <div className="wizard-grid">
+            {filtered.map((m, i) => {
+              const houseName = houseOf(m.user);
+              const need = currentProfile
+                ? sharesSkill(m.user.skills, currentProfile.needs)
+                : [];
+              return (
+                <motion.article
+                  key={m.user.id}
+                  className={`wizard-card house-${houseName.toLowerCase()}`}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(i, 5) * 0.06, duration: 0.35 }}
+                >
+                  <div className="card-top">
+                    <span className="house-label">
+                      <span /> {houseName}
+                    </span>
+                    <button
+                      className={`save-button ${saved.includes(m.user.id) ? "saved" : ""}`}
+                      aria-label={`${saved.includes(m.user.id) ? "Unsave" : "Save"} ${m.user.displayName}`}
+                      aria-pressed={saved.includes(m.user.id)}
+                      onClick={() => toggleSave(m.user.id)}
+                    >
+                      <Bookmark
+                        size={17}
+                        fill={
+                          saved.includes(m.user.id) ? "currentColor" : "none"
+                        }
+                      />
+                    </button>
+                  </div>
+                  <div className="wizard-identity">
+                    <span className="wizard-avatar">
+                      {m.user.displayName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")}
+                      <span className="avatar-spark">✦</span>
+                    </span>
+                    <div>
+                      <h3>{m.user.displayName}</h3>
+                      <span className="wizard-rating">
+                        <Star size={12} fill="currentColor" />{" "}
+                        {m.user.rating.toFixed(1)}{" "}
+                        <span>({m.user.totalReviews} reviews)</span>
+                      </span>
+                    </div>
+                  </div>
+                  <p className="wizard-bio">
+                    {m.user.bio.split("Wand:")[0].trim() || m.user.bio}
+                  </p>
+                  <div className="skill-block">
+                    <p className="eyebrow">CAN SHARE THEIR MAGIC IN</p>
+                    <div className="skill-tags">
+                      {m.user.skills.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => onOpenSchedule(m.user, s)}
+                          className={need.includes(s) ? "skill-match" : ""}
+                          title={`Book a lesson in ${s}`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="match-insight">
+                    <Sparkles size={14} />
+                    <p>
+                      <strong>{m.compatibilityScore}% compatible</strong>
+                      <span>{m.reasoning}</span>
+                    </p>
+                  </div>
+                  <div className="card-actions">
+                    <button
+                      className="book-button"
+                      disabled={!m.user.skills.length}
+                      onClick={() =>
+                        onOpenSchedule(m.user, need[0] || m.user.skills[0])
+                      }
+                    >
+                      Plan a lesson <ArrowUpRight size={16} />
+                    </button>
+                    <button
+                      className="chat-button"
+                      aria-label={`Send an owl to ${m.user.displayName}`}
+                      onClick={() => onStartChat(m.user, m.icebreaker)}
+                    >
+                      <MessageCircle size={17} />
+                    </button>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+      <p className="discover-footer">
+        ✧ &nbsp; Different houses. Shared curiosity. A little more magic.
+      </p>
     </div>
   );
 }

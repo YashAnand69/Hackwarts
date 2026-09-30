@@ -1,13 +1,14 @@
 // Web Audio API Synthesizer for authentic Hogwarts sound effects
 
 let audioCtx: AudioContext | null = null;
-let isSoundEnabled = true;
+let isSoundEnabled = getSoundEnabled();
 
 // Initialize or get audio context safely on user interaction
 function getAudioContext(): AudioContext | null {
   if (typeof window === "undefined") return null;
   if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass =
+      window.AudioContext || (window as any).webkitAudioContext;
     if (AudioContextClass) {
       audioCtx = new AudioContextClass();
     }
@@ -30,7 +31,7 @@ export function getSoundEnabled(): boolean {
     const stored = localStorage.getItem("hogwarts_sound_enabled");
     if (stored !== null) return stored === "true";
   } catch (e) {}
-  return true;
+  return false;
 }
 
 // 1. Wand Swoosh / Spell Cast sound
@@ -82,8 +83,14 @@ export function playMagicalSparkle() {
       osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
 
       gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.06);
-      gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + idx * 0.06 + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.06 + 0.25);
+      gain.gain.linearRampToValueAtTime(
+        0.12,
+        ctx.currentTime + idx * 0.06 + 0.02,
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        ctx.currentTime + idx * 0.06 + 0.25,
+      );
 
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -111,7 +118,10 @@ export function playOwlPostChime() {
 
       gain.gain.setValueAtTime(0.01, ctx.currentTime + i * 0.1);
       gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.1 + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.4);
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        ctx.currentTime + i * 0.1 + 0.4,
+      );
 
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -160,7 +170,10 @@ export function playCauldronBubble() {
     const startFreq = 200 + Math.random() * 200;
     osc.type = "sine";
     osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(startFreq * 2.5, ctx.currentTime + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(
+      startFreq * 2.5,
+      ctx.currentTime + 0.08,
+    );
 
     gain.gain.setValueAtTime(0.15, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
